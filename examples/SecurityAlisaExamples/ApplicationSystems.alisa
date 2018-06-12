@@ -1,0 +1,5 @@
+assurance case AssureApp for ApplicationSystems::ControlSystem [
+	assurance plan AssureApp for ApplicationSystems::ControlSystem.impl [
+		assure global SecurityVerificationPlan
+	]
+]

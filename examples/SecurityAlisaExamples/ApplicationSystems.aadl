@@ -1,0 +1,57 @@
+package ApplicationSystems
+public
+	with SecurityProperties;
+	device sensor
+		features
+			outp: out data port;
+	end sensor;
+	device actuator
+		features
+			inp: in data port;
+	end actuator;
+	abstract controller
+		features
+			inp: in data port;
+			outp: out data port;
+	end controller;
+	abstract implementation controller.i
+		subcomponents
+			t1: thread cthread;
+			t2: thread cthread;
+			tg1: thread group tg.i;
+	end controller.i;
+	thread group tg
+		features
+			inp: in data port;
+			outp: out data port;
+	end tg;
+	thread group implementation tg.i
+		subcomponents
+			tgt1: thread cthread;
+			tgt2: thread cthread;
+	end tg.i;
+	thread cthread
+		features
+			inp: in data port;
+			outp: out data port;
+	end cthread;
+	
+	system ControlSystem
+		
+	end ControlSystem;
+	
+	system implementation ControlSystem.impl
+		subcomponents
+			sense: device sensor{SecurityProperties::SecurityLevels => (SecurityProperties::unclassified);};
+			actuate: device actuator{SecurityProperties::SecurityLevels => (SecurityProperties::unclassified);};
+			control: abstract controller.i{SecurityProperties::SecurityLevels => (SecurityProperties::secret,SecurityProperties::unclassified);};
+		connections
+			c1: port sense.outp -> control.inp;
+			c2: port control.outp -> actuate.inp;
+annex resolute {**
+--	prove (check_mils_policy(this) )
+	prove (show_reachable_endpoints(this.sense) )
+--	prove (show_contained_threads(this) )
+**};
+	end ControlSystem.impl;
+end ApplicationSystems;
