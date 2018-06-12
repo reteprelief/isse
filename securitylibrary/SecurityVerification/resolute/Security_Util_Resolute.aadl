@@ -1,0 +1,201 @@
+package Security_Util_Resolute
+public
+	annex Resolute {**
+
+----------------------------------
+-- Security related property value retrieval
+----------------------------------
+	
+	-- by default assumed to be exposed if property is not set
+   is_exposed(el : aadl) : bool =
+   property (el, SecurityProperties::Exposed,true) 
+
+   -- by default assumed to be untrusted if property is not set
+   is_trusted(el : aadl) : bool =
+    property(el, SecurityProperties::Trusted,false) 
+
+   is_authenticator(c : component) : bool =
+  	property(c, SecurityProperties::Authenticator,false)
+
+	
+----------------------------------
+-- Security trust/space boundary related functions
+----------------------------------
+
+	is_trusted_component(c : component) <=
+	  ** c " is a trusted component" **
+	  is_trusted(c)
+
+	runs_on_os(p : component, os : string) <=
+	  ** p " runs on " os **
+	  property(p, SecurityProperties::OS,"none") = os
+
+ 	runs_on_thread_enforced_memory_os(p : process) <=
+	  ** p " runs on " os " that  enforces thread local memory access"**
+	  let os : string = property(p, SecurityProperties::OS,"none");
+	  member(os ,ThreadEnforcedMemoryOSes)
+ 
+  
+	runs_on_partition_enforced_memory_os(p : process) <=
+	  ** p " runs on " os " that  enforces partition level memory access"**
+	  let os : string = property(p, SecurityProperties::OS,"none");
+	  member(os ,PartitionEnforcedMemoryOSes)
+
+  
+	memory_safe_language_thread(t : thread) <=
+	  ** "thread " t " is generated from " lang **
+	  let lang : string = property(t, SecurityProperties::Language);
+	  member(lang ,MemorySafeLanguages)
+
+	
+----------------------------------
+-- Physical exposure and encryption protection related functions
+----------------------------------
+	
+	-- connection binding targets (virtual bus or hardwaare) are either not exposed or are encrypted.
+	-- for a virtual bus target if it is not encrypted we examine its conneciton binding targets.
+	-- Both virtual buses and hardware can be marked as encrypted 
+	-- Only hardware components are expected to be marked exposed.
+	connection_binding_targets_encrypted_or_not_exposed(element: aadl): bool =
+		let blist : [component] = connection_binding(element);
+		length(blist) = 0 or
+		forall (be: as_set(blist)). 
+		if is_virtual_bus(be) then is_encrypted(be) or connection_binding_targets_encrypted_or_not_exposed(be)
+		else not is_exposed(be) or is_encrypted(be)
+	
+	-- connection binding targets (virtual bus or hardwaare) are encrypted.
+	-- for a virtual bus target if it is not encrypted we examine its conneciton binding targets.
+	-- Both virtual buses and hardware can be marked as encrypted 
+	connection_binding_targets_encrypted(element: aadl): bool =
+		let blist : [component] = connection_binding(element);
+		length(blist) = 0 or
+		forall (be: as_set(blist)). 
+		if is_virtual_bus(be) then is_encrypted(be) or connection_binding_targets_encrypted_or_not_exposed(be)
+		else is_encrypted(be)
+	
+	-- true if virtual bus has encryption property and its value is true
+	-- Alternatively true if all virtual buses it is bound to are encrypted
+	-- false if no layer (set of bound) of virtual buses supports encryption
+	is_encrypted (vb : component) : bool =
+	property(vb,SecurityProperties::Encryption,false)
+	or forall (vb2 : {bvb for (bvb:virtual_bus)| is_bound_to (vb, bvb)}). is_encrypted (vb2)
+
+-------------------------------------------------
+-- Security Level/Domain utility methods
+-------------------------------------------------
+
+	-- global constant
+   info_security_levels_US: [string] = as_list(enumerated_values(SecurityProperties::InformationSecurityLevelUS))
+
+ 
+ 	-- true if neither model element has SecurityLevels set
+ 	-- useful to interpret this as elements have same level if is_same_info_security_level and is_same_security_level return false
+	has_security_properties (element1 : aadl) : bool = 
+		has_property (element1, SecurityProperties::SecurityLevels) or has_property (element1, SecurityProperties::InformationSecurityLevelUS)
+		or has_property(element1,SecurityProperties::SecurityDomains)
+
+ 
+ 	-- true if neither model element has SecurityLevels set
+ 	-- useful to interpret this as elements have same level if is_same_info_security_level and is_same_security_level return false
+	neither_has_security_levels (element1 : aadl, element2 : aadl) : bool = 
+		not has_property (element1, SecurityProperties::SecurityLevels) and not has_property (element2, SecurityProperties::SecurityLevels)
+ 
+ 	-- true if neither model element has SecurityLevels set
+ 	-- useful to interpret this as elements have same level if is_same_info_security_level and is_same_security_level return false
+	neither_has_info_security_levels (element1 : aadl, element2 : aadl) : bool = 
+		not has_property (element1, SecurityProperties::InformationSecurityLevelUS) and not has_property (element2, SecurityProperties::InformationSecurityLevelUS)
+
+ 	-- true if neither model element has SecurityDomains set
+ 	-- useful to interpret no domains in obth as ok
+	neither_has_security_domains (element1 : aadl, element2 : aadl) : bool = 
+		not has_property (element1, SecurityProperties::SecurityDomains) and not has_property (element2, SecurityProperties::SecurityDomains)
+   
+	-- true if both model elements have Information_Security_Level_US property
+	-- and they have same security level 
+	-- false otherwise  
+	is_same_info_security_level (element1 : aadl, element2 : aadl) : bool = 
+		if has_property (element1, SecurityProperties::InformationSecurityLevelUS) and 
+			has_property (element2, SecurityProperties::InformationSecurityLevelUS)
+	 	then 
+			property (element1, SecurityProperties::InformationSecurityLevelUS)
+			 = property (element2, SecurityProperties::InformationSecurityLevelUS)
+	 	else
+	 		false
+   
+	-- true if both subset and superset model elements have Information_Security_Level_US property
+	-- and the superset model element has same or higher security level as the subet model element
+	-- false otherwise  
+	is_subset_info_security_level (subset : aadl, superset : aadl) : bool = 
+		if has_property (superset, SecurityProperties::InformationSecurityLevelUS) and has_property (subset, SecurityProperties::InformationSecurityLevelUS)
+	 	then 
+	 		is_before(info_security_levels_US,
+	 			property (superset, SecurityProperties::InformationSecurityLevelUS),
+	 			property (subset, SecurityProperties::InformationSecurityLevelUS))
+	 	else
+	 		false
+	
+		
+	-- true if both model elements have Information_Security_Level_US property
+	-- and they have same security level 
+	-- false otherwise  
+	is_same_security_level (element1 : aadl, element2 : aadl) : bool = 
+	if	has_property (element1, SecurityProperties::SecurityLevels) and has_property (element2, SecurityProperties::SecurityLevels)
+	 then (
+	 	let set1: {string}=as_set(property (element1, SecurityProperties::SecurityLevels));
+		let set2: {string}=as_set(property (element2, SecurityProperties::SecurityLevels));
+		length(set1) = length(set2) and forall(e:set1).member(e,set2)
+	) else 
+		false
+
+
+	-- true if both subset and superset model elements have Information_Security_Level_US property
+	-- and the superset model element caontains all the security levels of the subet model element
+	-- false otherwise  
+	is_subset_security_level (subset : aadl, superset: aadl) : bool =
+	if has_property (superset, SecurityProperties::SecurityLevels) and has_property (subset, SecurityProperties::SecurityLevels)
+	then ( 
+	    let set1: {string}=as_set(property (superset, SecurityProperties::SecurityLevels));
+		let set2: {string}=as_set(property (subset, SecurityProperties::SecurityLevels));
+		length(intersect (set1,set2)) = length(set2)
+	) else
+		false
+
+	-- true if both model elements have SecurityDomain property and they have the same value set 
+	-- false otherwise
+	is_same_security_domain (element1 : aadl, element2 : aadl) : bool = 
+	if has_property (element1, SecurityProperties::SecurityDomains) and has_property (element2, SecurityProperties::SecurityDomains) 
+	then (
+	    let set1: {string}=as_set(property (element1, SecurityProperties::SecurityDomains));
+		let set2: {string}=as_set(property (element2, SecurityProperties::SecurityDomains));
+		length(set1) = length(set2) and forall(e:set1).member(e,set2)
+ 	) else
+ 		false 
+
+	-- true if both have SecurityDomains proeprty and they have the same value set 
+	-- false otherwise
+	is_subset_security_domain (subset : aadl, superset : aadl) : bool =
+		if has_property (superset, SecurityProperties::SecurityDomains) and has_property (subset, SecurityProperties::SecurityLevels)
+	 	then 
+		( 	let set1: {string}=as_set(property (superset, SecurityProperties::SecurityDomains));
+			let set2: {string}=as_set(property (subset, SecurityProperties::SecurityDomains));
+			forall(e:set2).member(e,set1)
+		) else
+		    false
+ 	
+	-- true if unclassified according to SecurityLevels and Information_Security_Level_US
+	is_unclassified(element : aadl) : bool =
+		is_unclassified_level(element) and is_unclassified_info_level(element)
+
+	-- true if SecurityLevels property is not set, or is set with an empty set {}, or with a single value "Unclassified"""
+	is_unclassified_level(element : aadl) : bool =
+	has_property(element,SecurityProperties::SecurityLevels) =>
+	let seclevels : [string] = property(element, SecurityProperties::SecurityLevels);
+  		(length (seclevels) = 0) or ((length (seclevels) = 1)
+		and (member ("Unclassified",seclevels)))
+	
+	-- true if Information_Security_Level_US is not set, or has the literal "Unclassified" as value
+	is_unclassified_info_level(modelelement : aadl) : bool =
+    "Unclassified" = property(modelelement, SecurityProperties::InformationSecurityLevelUS, "Unclassified")
+  
+	**};
+end Security_Util_Resolute;

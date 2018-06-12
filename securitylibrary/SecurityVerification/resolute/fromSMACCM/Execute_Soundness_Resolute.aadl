@@ -1,0 +1,127 @@
+package Execute_Soundness_Resolute
+  public 
+    
+    annex resolute {**
+
+-------------------------------------
+-- for all trusted components the following holds about its input
+-- input data is from trusted source, authenticator source
+-- in addition the connection is within the same memory protected process, between components within the same SeL4 OS/processor
+-- or across secure CANBus or "hardware connection", i.e., intended to be physical wire.
+-- Memory protected process means that it runs on eChronos and all components bound to the same memory must also be memory protectedbe thread memory safe (i.e., threads implemented in Ivory)
+-- secure CANBus (any bus) means both connection source and dest are trusted for all other connections as well, and all bus connected hardare components are trusted 
+-- (this includes devices as connection ends that are logically andphysically connected). This also includes processors that the SW is bound to. 
+all_trusted_components_only_receive_legit(legit_data_types: {aadl}) <=
+  ** "All trusted components receive only legitimate data" **
+  forall (c : component). is_trusted(c) => component_only_receives_legit(c,legit_data_types)
+
+component_only_receives_legit(comp : component, legit_data_types: {aadl}) <=
+  ** comp " only receives legitimate data, data from trusted components, or data from an authenticator" **
+  -- TODO: memory_protected(c) and
+  forall (conn : incoming_connections(comp)).
+    only_receive_legit_generalized_connection(conn,legit_data_types)
+     
+only_receive_legit_generalized_connection(conn : connection, legit_data_types: {aadl}) <=
+  ** conn " only receives legitimate data, data from trusted components, or data from an authenticator" **
+    connection_secure(conn) and
+    (only_carries_legitimate_data(conn,legit_data_types) or
+     source_is_trusted(conn) or
+     source_is_authenticator(conn))
+
+connection_secure(conn : connection) <=
+  ** conn " preserves legitimate data" **
+  internal_sel4(conn) or
+  internal_process(conn) or
+  secure_can_connection(conn) or
+  hardware_connection(conn)
+
+internal_sel4(conn : connection) <=
+  ** conn " is an internal SeL4 connection" **
+-- TODO model sel as OS (virtual machine and/or processor rather than system with SeL4 property that contains both ends of the connection)
+  exists (s : system).
+    is_sel4(s) and contained(conn,s)
+--    contained(source_component(conn), s) and
+--    contained(destination_component(conn), s)
+    
+is_sel4(s : system) <=
+  ** s " is running SeL4" **
+  property(s, SecurityProperties::OS) = "seL4"
+  
+internal_process(conn : connection) <=
+  ** conn " is internal to a memory protected process" **
+  exists (p : process).
+    contained(source_component(conn), p) and
+    contained(destination_component(conn), p) and
+    memory_protected(p)
+
+memory_protected(p : process) <=
+  ** "The memory of process " p " is protected from alterations by other processes" **
+  is_eChronos(p) and
+   forall (mem : memory). bound(p, mem) =>
+     forall (q : process). bound(q, mem) => memory_safe_process(q)
+
+is_eChronos(p : process) <=
+  ** p " is running eChronos" **
+  property(p, SecurityProperties::OS) = "eChronos"
+
+memory_safe_process(p : process) <=
+  ** "The process " p " only writes to its own memory space" **
+  forall (t : thread). contained(t, p) => memory_safe_thread(t)
+
+memory_safe_thread(t : thread) <=
+  ** "The thread " t " only writes to its own memory space" **
+  ivory_thread(t)
+
+ivory_thread(t : thread) <=
+  ** "The thread " t " is generated from Ivory" **
+  property(t, SecurityProperties::Language) = "Ivory"
+
+secure_can_connection(conn : connection) <=
+  ** conn " is over secure CAN bus" **
+  exists (b : bus).
+    is_bound(conn, b) and
+    bus_only_trusted_software(b) and
+    bus_only_trusted_hardware(b)
+
+is_bound(conn : connection, b : bus) <=
+  ** conn " is bound to " b **
+  connection_bound(conn, b)
+
+bus_only_trusted_software(b : bus) <=
+  ** b " is only connected to trusted software components" **
+  forall (conn : connection).
+    bound(conn, b) => connection_only_trusted_endpoints(conn)
+    
+connection_only_trusted_endpoints(conn : connection) <=
+  ** "Both endpoints of " conn " are trusted software components" **
+  is_trusted_component(source_component(conn)) and is_trusted_component(destination_component(conn))
+  
+bus_only_trusted_hardware(b : bus) <=
+  ** b " is only connected to trusted hardware components" **
+  forall (conn : connection).
+    source_component(conn) = b => is_trusted_hardware(destination_component(conn))
+
+is_trusted_hardware(hw : aadl) <=
+  ** hw " is trusted hardware" **
+  is_trusted(hw)
+
+-- TODO: What exactly makes a connection a hardware connection? What if it goes over a bus, etc?
+hardware_connection(conn : connection) <=
+  ** conn " is a hardware connection" **
+  source_component(conn) instanceof device
+
+only_carries_legitimate_data(c : connection,legit_data_types: {aadl}) <=
+  ** c " only carries legitimate data" **
+  member(type(c),legit_data_types)
+
+source_is_trusted(c : connection) <=
+  ** "The source of " c " is trusted" **
+  is_trusted(source_component(c))
+
+source_is_authenticator(c : connection) <=
+  ** "The source of " c " is an authenticator" **
+  is_authenticator(source_component(c))
+
+**};
+    
+end Execute_Soundness_Resolute;
