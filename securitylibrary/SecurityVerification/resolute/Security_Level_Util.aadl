@@ -54,6 +54,7 @@ public
 	-- true if the superset model element has same or higher security clearance as the subet model element
 	-- note that absent property value is interpreted as Unclassified   
 	is_lower_or_same_security_clearance (lower : aadl, higher : aadl) : bool = 
+	debug("access to increasing_security_classification_ordering ", increasing_security_classification_ordering) and 
 	 		is_before(increasing_security_classification_ordering,
 	 			get_security_clearance (lower),
 	 			get_security_clearance (higher))

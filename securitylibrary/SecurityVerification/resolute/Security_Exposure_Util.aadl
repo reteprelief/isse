@@ -25,10 +25,10 @@ public
 	  ** p " runs on " os **
 	  property(p, SecurityEnforcementProperties::OS,"none") = os
 
- 	runs_on_thread_enforced_memory_os(p : process) <=
-	  ** p " runs on " os " that  enforces thread local memory access"**
+ 	runs_on_no_virtual_memory_os(p : process) <=
+	  ** p " runs on " os " that does not virtual memory (VM)"**
 	  let os : string = property(p, SecurityEnforcementProperties::OS,"none");
-	  member(os ,ThreadEnforcedMemoryOSes)
+	  member(os ,Userdefined_Resolute_Constants::Userdefined_Resolute_Constants_public::Resolute::Resolute::NoVirtualMemoryOSes)
  
   
 	runs_on_partition_enforced_memory_os(p : process) <=

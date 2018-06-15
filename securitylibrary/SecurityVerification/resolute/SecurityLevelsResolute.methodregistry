@@ -1,6 +1,6 @@
 // Copyright 2018 Carnegie Mellon University. See Notice.txt
 // Distribution Statement A: Approved for Public Release; Distribution is Unlimited.
-verification methods SecurityLevels [
+verification methods SecurityLevelsResolute [
 // this set of methods deals with consistency in security level and domain specification
 
 

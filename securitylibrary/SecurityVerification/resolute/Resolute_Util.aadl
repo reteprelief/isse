@@ -179,7 +179,7 @@ is_outgoing(fea: feature): bool =
    -- return list of processors the component is bound to via processor binding
   processor_binding(logical : aadl) : [component] =
    	  property(logical, Deployment_Properties::Actual_Processor_Binding,[])
- 
+
    -- return list of memory components the component is bound to via memory binding
   memory_binding(logical : aadl) : [component] =
   	  property(logical, Deployment_Properties::Actual_Memory_Binding,[])
@@ -187,11 +187,10 @@ is_outgoing(fea: feature): bool =
    -- return list of components the logical component is bound to via function binding
   function_binding(logical : aadl) : [component] =
    	  property(logical, Deployment_Properties::Actual_Function_Binding,[])
- 
- 
  	
 	-- connection between components on two different processors
    is_distributed(conn : connection) : bool =
+   debug ("is distributed ", conn) and
    	let srcHW : [component] = processor_binding(source_component (conn));
    	let dstHW : [component] = processor_binding(destination_component (conn));
       srcHW <> dstHW
@@ -232,6 +231,7 @@ is_outgoing(fea: feature): bool =
 
 	-- support method to determine ordering
 	is_before(seclevels: [string], first:string, second: string): bool =
+	seclevels <> [] and (
 	let match : string = head(seclevels);
 	if (match = first) then
 		true
@@ -239,7 +239,8 @@ is_outgoing(fea: feature): bool =
 		false
 	else 
 		is_before(tail(seclevels),first,second)
- 
+ 	)
+ 	
  ----------------------------
  -- functions for result logging and debugging
  -----------------------------    

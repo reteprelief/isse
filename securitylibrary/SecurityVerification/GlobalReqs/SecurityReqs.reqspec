@@ -13,8 +13,7 @@ global requirements SecurityReqs
 		refines BusSecurity
 	]
 	
-	// the next requirements are not decomposed
-// in some case
+	// the next requirements are not decomposed in some case
 	requirement SharedMemory : "different security levels on shared bus" for memory [
 		description "component bound to same memory must have same security level"
 	]
@@ -32,9 +31,6 @@ global requirements SecurityReqs
 	]
 	requirement ComponentSecurity : "feature security level must be supported by component" for component [
 		description "feature security level must be supported by component"
-	]
-	requirement SecurePortConnections : "Port connections meet security requirements" for root [
-		description "All port connections in system instance meet several security verifications"
 	]
 	requirement SecurePortConnection : "Port connections meet security requirements" for connection [
 		description "Each port connection meets several security verifications"

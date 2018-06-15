@@ -2,7 +2,9 @@ verification plan SecurityVerificationPlan for SecurityReqs [
 	claim BusSecurity [
 		claim SharedBusSecurity [
 			activities
-			sharedBuscheck : SecurityLevelsResolute.SharedBusHardwareSameSecurityLevels ( )
+			sharedBuscheckClearance : SecurityLevelsResolute.SharedBusHardwareSameSecurityClearance ( )
+			sharedBuscheckLevel : SecurityLevelsResolute.SharedBusHardwareSameInformationSecurityLevels ( )
+			sharedBuscheckDomain : SecurityLevelsResolute.SharedBusHardwareSameSecurityDomain ( )
 		] 
 		
 		claim NoRelayChannelSecurity [
@@ -13,7 +15,7 @@ verification plan SecurityVerificationPlan for SecurityReqs [
 
 	claim SharedMemory [
 		activities
-		sharedMemorycheck : SecurityLevelsResolute.SharedMemorySameSecurityLevels ( )
+		sharedMemorycheckLevel : SecurityLevelsResolute.SharedMemorySameSecurityLevels ( )
 	]
 
 	claim SharedProcessor [
@@ -23,11 +25,6 @@ verification plan SecurityVerificationPlan for SecurityReqs [
 	claim SharedDataComponent [
 		activities
 		checkConcurrency : SecurityExposureResolute.SharedDataComponentsUseConcurrencyControl ( )
-	]
-
-	claim SecurePortConnections : "all connections in instance model; invoked on instance model root" [
-		activities
-		checkPortConnection : SecurityLevelsResolute.ForAllPortConnectionsSameSecurityLevel ( )
 	]
 
 	claim SecurePortConnection [
@@ -55,7 +52,7 @@ verification plan SecurityVerificationPlan for SecurityReqs [
 
 	claim ComponentSecurity [
 		activities
-		componentFeaturescheck : SecurityLevelsResolute.FeatureSecurityLevelsAreSupportedByComponent ( )
+		componentFeaturescheck : SecurityLevelsResolute.FeatureSecurityLevelsAndNeedToKnowDomainsAreSupportedByComponent ( )
 		//		connectionsEncrypted: SecurityVerificationMethods.ExposedComponentConnectionsEncrypted()
 
 	]

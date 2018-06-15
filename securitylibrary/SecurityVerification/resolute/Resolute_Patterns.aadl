@@ -16,7 +16,8 @@ public
 
 	-- Here we use a filter operator to create a subset of the components and perform a forall on the subset
  	all_filtered_components_have_x (cp: component) : bool =
- 		forall(fc: {cn for  (cn:component) | contained(cn, cp)}). has_x(fc)
+ 	let filtered :{component} = {cn for  (cn:component) | contained(cn, cp)};
+ 		forall(fc: filtered). has_x(fc)
 
 	-- a map pattern: for all elements apply a function resulting in a list. 
 	-- This list is then used as parameter to perform a sum.

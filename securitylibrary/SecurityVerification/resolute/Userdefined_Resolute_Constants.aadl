@@ -13,7 +13,7 @@ public
 	-- languages that generate code that is memory safe, i.e., stays within its space, e.g., by limiting pointers
 	MemorySafeLanguages: {string} = {"Ivory","Mesa", "Ada"}
 	PartitionEnforcedMemoryOSes: {string} = {"SeL4"}
-	ThreadEnforcedMemoryOSes: {string} = {"eChronos"}
+	NoVirtualMemoryOSes: {string} = {"eChronos"}
 
 	-- execution time enforcement
 	PartitionEnforcedTimingOSes: {string} = {"VXWorks"}
