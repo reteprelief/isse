@@ -1,4 +1,7 @@
-package Userdefined_Project_Constants
+-- Copyright 2018 Carnegie Mellon University. See Notice.txt
+-- Distribution Statement A: Approved for Public Release; Distribution is Unlimited.
+
+package Userdefined_Resolute_Constants
 public
 	annex Resolute {**
 	-- global constant to turn debug logging to console on or off
@@ -17,4 +20,4 @@ public
 	ThreadEnforcedTimingOSes: {string} = {"DEOS"}
 
 **};
-end Userdefined_Project_Constants;
+end Userdefined_Resolute_Constants;

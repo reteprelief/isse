@@ -112,45 +112,6 @@ recursive_predecrypt_reach(curr : {component}) : {component} =
 next_predecrypt_reach(curr : {component}) : {component} =
   {y for (x : curr) (y : reachable_components(x)) | not is_decrypt(x)}
 
-reachable_components(comp : component) : {component} =
-  {c for (conn : connections(comp))
-  	     (c : reachable_components_via_connection(comp, conn))}
-
--- What components (either a single one or none) can 'comp' reach directly via 'conn'
---
--- This is complicated due to data access connections which seem to ignore
--- normal aadl directionality, and instead use an access rights property
-reachable_components_via_connection(comp : component, conn : connection) : {component} =
-  -- a direct port connection
-  if is_port_connection(conn) then
-    if source_component(conn) = comp then {destination_component(conn)} else {}
-  -- a component reading from 'comp' as a data component via read access on 'conn'
-  else if comp instanceof data then
-    if comp = source(conn) and has_read_access(destination(conn)) then
-      {destination_component(conn)}
-    else if comp = destination(conn) and has_read_access(source(conn)) then
-      {source_component(conn)}
-    else
-      {}
-  -- 'comp' writing to a data component via write access on 'conn'  
-  else if destination(conn) instanceof data and has_write_access(source(conn)) then
-    {destination_component(conn)}
-  else if source(conn) instanceof data and has_write_access(destination(conn)) then
-    {source_component(conn)}
-  -- Other connections unsupported at this time
-  else
-    {}
-
-has_write_access(a : aadl) : bool =
-  has_property(a, Memory_Properties::Access_Right) and
-  (property(a, Memory_Properties::Access_Right) = "write_only" or
-   property(a, Memory_Properties::Access_Right) = "read_write")
-
-has_read_access(a : aadl) : bool =
-  has_property(a, Memory_Properties::Access_Right) and
-  (property(a, Memory_Properties::Access_Right) = "read_only" or
-   property(a, Memory_Properties::Access_Right) = "read_write")
-
 is_decrypt(comp : component) : bool =
   type(comp) = FlightMissing::decryptTask_uart1 or
   type(comp) = FlightMissing::decryptTask_uart5
