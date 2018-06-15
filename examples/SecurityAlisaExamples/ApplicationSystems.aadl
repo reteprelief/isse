@@ -1,6 +1,6 @@
 package ApplicationSystems
 public
-	with SecurityProperties;
+	with SecurityClassificationProperties;
 	device sensor
 		features
 			outp: out data port;
@@ -42,16 +42,14 @@ public
 	
 	system implementation ControlSystem.impl
 		subcomponents
-			sense: device sensor{SecurityProperties::SecurityLevels => (SecurityProperties::unclassified);};
-			actuate: device actuator{SecurityProperties::SecurityLevels => (SecurityProperties::unclassified);};
-			control: abstract controller.i{SecurityProperties::SecurityLevels => (SecurityProperties::secret,SecurityProperties::unclassified);};
+			sense: device sensor{SecurityClassificationProperties::SecurityClearance => UserDefinedSecurityConstants::Unclassified;};
+			actuate: device actuator{SecurityClassificationProperties::SecurityClearance => UserDefinedSecurityConstants::Unclassified;};
+			control: abstract controller.i{SecurityClassificationProperties::SecurityClearance => UserDefinedSecurityConstants::Secret;};
 		connections
 			c1: port sense.outp -> control.inp;
 			c2: port control.outp -> actuate.inp;
 annex resolute {**
---	prove (check_mils_policy(this) )
-	prove (show_reachable_endpoints(this.sense) )
---	prove (show_contained_threads(this) )
+	prove (check_mils_policy(this) )
 **};
 	end ControlSystem.impl;
 end ApplicationSystems;

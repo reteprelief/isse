@@ -1,0 +1,58 @@
+package Resolute_Prove_Configurations
+public
+	annex Resolute {**
+			
+	check_mils_policy (self:component) <=
+	** "Check security constraints" **
+	check_mils_application_security_rules(self) and check_implementation_security_exposure(self)
+
+	-------------------------------------------------------------
+	--  Security level/domain rules
+	-------------------------------------------------------------
+	check_mils_application_security_rules (self:component) <=
+	** "All security level/domain rules hold" ** 
+	forall (b: bus). (all_hardware_connected_by_bus_has_same_security_clearance (b) 
+		and all_hardware_connected_by_bus_has_same_information_security_level(b)
+		and all_hardware_connected_by_bus_has_same_security_domain(b)
+	)and -- R0
+	forall(pconn: {conn for  (conn:connection) | is_a_port_connection(conn)}) . -- R1
+ 		port_connection_same_security_level_and_need_to_know_domains(pconn)
+ and
+	forall(mem:memory).     -- R2
+	(memory_bound_components_same_security_level (mem) 
+	and memory_bound_components_same_need_to_know_domains(mem)	
+	) and 
+	forall(cpu:processor).     -- R3
+	(processor_bound_components_same_security_level (cpu) 
+	and processor_bound_components_same_need_to_know_domains(cpu)	
+	) 
+	and 
+	forall(vp:virtual_processor).  -- R3
+	(virtual_processor_bound_components_same_security_level (vp)
+		and virtual_processor_bound_components_same_need_to_know_domains(vp)
+	)
+	 and 
+	forall(p:process).threads_in_component_same_security_level_and_need_to_know_domains_or_trusted (p) and  -- R4
+	forall (c:component).feature_security_levels_and_need_to_know_domains_supported_by_component (c) 
+	and  -- R5
+	forall_hardware_relay_channel_between_buses (self)    -- R6, cwe 514
+
+	-------------------------------------------------------------
+	--  Security exposure - both physical and design flaw exposure
+	-------------------------------------------------------------
+	check_implementation_security_exposure (self:component) <=
+	** "Check the architecture for security risk exposure and common weaknesses" **
+		forall_connections_encrypted_over_exposed_hardware (self) and  --R7
+		forall_connections_across_processors_connection_is_encrypted(self) and  -- R8
+		forall_connections_no_buffer_overflow(self) and -- cwe131
+		forall_data_shared_components_uses_concurrency_control_protocol(self) and -- cwe362
+		sufficient_encryption_strength(self) and
+		forall_connections_consistent_use_of_unclassified_data_and_encrypted_classfied_data_on_port_connections(self) and
+		forall_connections_same_data_type_or_size_and_consistent_data_model_spec(self) --cwe805
+	and 
+	forall (comp : component) . 
+		not((comp instanceof data) or (comp instanceof bus)) => all_component_features_are_connected(comp)
+
+  
+	**};
+end Resolute_Prove_Configurations;
