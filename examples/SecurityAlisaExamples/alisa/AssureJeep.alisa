@@ -1,0 +1,5 @@
+assurance case AssureJeep for case_study::automotive::jeep::car [
+	assurance plan JeepPlan for case_study::automotive::jeep::car.cherokee [
+		assure global SecurityVerificationPlan
+	]
+]

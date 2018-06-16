@@ -1,0 +1,10 @@
+system requirements JeepReq for case_study::automotive::jeep::car [
+//	include Security1.BusSecurity for bus
+//	include Security1.SharedMemory for memory
+//	include Security1.SharedProcessor for processor
+//	include Security1.SharedVirtualProcessor for virtual processor
+//	include Security1.ProcessSecurity for process
+//	include Security1.SharedDataComponent for data
+//	include Security1.ComponentSecurity
+//	include Security1.SecurePortConnection for self
+]
