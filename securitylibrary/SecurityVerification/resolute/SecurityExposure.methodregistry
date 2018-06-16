@@ -110,4 +110,10 @@ verification methods SecurityExposureResolute [
 		resolute encryption_of_classified_data_on_connection
 	]
  
+ 	method AllComponentPortsEncrypted (component): 
+	"All component ports have encryption" [
+		resolute all_component_ports_have_encryption
+	]
+ 
+ 
 ]

@@ -53,7 +53,7 @@ verification plan SecurityVerificationPlan for SecurityReqs [
 	claim ComponentSecurity [
 		activities
 		componentFeaturescheck : SecurityLevelsResolute.FeatureSecurityLevelsAndNeedToKnowDomainsAreSupportedByComponent ( )
-		//		connectionsEncrypted: SecurityVerificationMethods.ExposedComponentConnectionsEncrypted()
+//		portsEncrypted: SecurityExposureResolute.AllComponentPortsEncrypted ()
 
 	]
 ]

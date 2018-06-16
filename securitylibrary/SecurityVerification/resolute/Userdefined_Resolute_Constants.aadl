@@ -4,9 +4,6 @@
 package Userdefined_Resolute_Constants
 public
 	annex Resolute {**
-	-- global constant to turn debug logging to console on or off
- 	DoLogToConsole: bool = true
-
 
 	-- these constants could be defined as property constants
 	

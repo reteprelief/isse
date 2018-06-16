@@ -190,7 +190,6 @@ is_outgoing(fea: feature): bool =
  	
 	-- connection between components on two different processors
    is_distributed(conn : connection) : bool =
-   debug ("is distributed ", conn) and
    	let srcHW : [component] = processor_binding(source_component (conn));
    	let dstHW : [component] = processor_binding(destination_component (conn));
       srcHW <> dstHW
