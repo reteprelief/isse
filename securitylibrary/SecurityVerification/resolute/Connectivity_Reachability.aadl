@@ -52,17 +52,17 @@ component_is_source(comp : component) <=
 -- the use of a set ensures that we do not recurse forever
 
 all_reachable_components(c : component) : {component} =
-    recursive_reached_all({c})
+    recursive_reach_all_components({c})
 
 -- support method to expand on a set of reachable components by the next directly rachable components
 -- the use of a set ensures that we do not recurse forever
-recursive_reached_all(curr: {component}) : {component} =
+recursive_reach_all_components(curr: {component}) : {component} =
 	let next_ones : {component} = {y for (x : curr) (y : directly_reachable_components(x))};
     let next_new_ones : {component} = {ele for (ele : next_ones)| not(member(ele,curr))};
     if (next_new_ones = {} ) then
     	curr
     else 
-    	union(curr, recursive_reached_all(next_new_ones))
+    	union(curr, recursive_reach_all_components(next_new_ones))
 
 -- all components that are reachable via port or data access connections from the given component
 -- we consider all leaf components, i.e., components with no outgoing connection
@@ -72,17 +72,35 @@ recursive_reached_all(curr: {component}) : {component} =
 -- the use of a set ensures that we do not recurse forever
 
 all_reachable_leaf_components(c : component) : {component} =
-    recursive_reached_leafs({c})
+    recursive_reached_leaf_components({c})
 
 -- support method to expand on a set of reachable components by the next directly rachable components
 -- the use of a set ensures that we do not recurse forever
-recursive_reached_leafs(curr: {component}) : {component} =
+recursive_reached_leaf_components(curr: {component}) : {component} =
 	let next_ones : {component} = {y for (x : curr) (y : directly_reachable_components(x))};
     let next_new_ones : {component} = {ele for (ele : next_ones)| not(member(ele,curr))};
     if (next_new_ones = {} ) then
     	curr
     else 
-    	{ next for (next : recursive_reached_leafs(next_new_ones)) | (outgoing_component_connections(next) = {})}
+    	{ next for (next : recursive_reached_leaf_components(next_new_ones)) | (outgoing_component_connections(next) = {})}
+
+
+-- all port, data, bus access connections that are traversed when identifying reachable components
+-- we consider direct and indirect reachability
+
+all_reachable_connections(c : component) : {connection} =
+    recursive_visited_connections({c})
+
+-- support method to expand on a set of visited connections in recrusive traversal
+recursive_visited_connections(curr: {component}) : {connection} = 
+	let outconns : {connection} = outgoing_component_connections(comp);
+
+	let next_ones : {component} = {otherend for (conn: outconns) (otherend: other_connection_end(conn,comp))};
+    let next_new_ones : {component} = {ele for (ele : next_ones)| not(member(ele,curr))};
+    if (next_new_ones = {} ) then
+    	{}
+    else 
+    	union(outconns, recursive_visited_connections(next_new_ones))
 
 ---------------------------------
 -- record the reachable sets in Resolute result structure
@@ -95,7 +113,6 @@ recursive_reached_leafs(curr: {component}) : {component} =
 	record_contained_threads(pr : component) <=
 	** "Threads contained in given component (process) " pr "  are " thrds **
 		let thrds: {component} = contained_threads(pr); true
-
 
 	**};
 end Connectivity_Reachability;
