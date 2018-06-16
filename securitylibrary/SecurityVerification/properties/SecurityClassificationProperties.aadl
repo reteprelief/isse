@@ -13,10 +13,10 @@ property set SecurityClassificationProperties is
 	-- and an optional supplemental security statement. 
 	--	
 	SecurityClearance: aadlstring 
-	applies to (system, device);
+	applies to (device, system, bus, memory, processor,abstract);
 	--
 	SecurityClearanceSupplement: aadlstring
-	applies to (system, device);
+	applies to (device, system, bus, memory, processor,abstract);
 	--
 	-- The secondary security clearance is provided in the event of multiple clearances 
 	-- (e.g. a clearance from two different agencies.) The secondary clearance also has a 
