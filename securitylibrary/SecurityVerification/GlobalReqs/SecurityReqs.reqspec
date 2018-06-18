@@ -1,7 +1,7 @@
 global requirements SecurityReqs
 [
 	// first requirement will be refined into two more specific requirements (directly below)
-	requirement BusSecurity : "Security requirements on bus" for root [
+	requirement BusSecurity : "Security requirements on bus" for bus [
 		description "Secure use of bus"
 	]
 	requirement SharedBusSecurity : "Security requirements on components sharing a bus" for bus [
@@ -34,6 +34,6 @@ global requirements SecurityReqs
 	]
 	requirement SecurePortConnection : "Port connections meet security requirements" for connection [
 		description "Each port connection meets several security verifications"
-		when securityverification.SecurityVerification.isPortConnection()
+//		when securityverification.SecurityVerification.isPortConnection()
 	]
 ]
