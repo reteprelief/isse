@@ -18,27 +18,27 @@ end bean;
 
 bus bluetooth
 properties
-	SecurityEnforcementProperties::exposed => true;
+	SecurityEnforcementProperties::Exposed => true;
 end bluetooth;
 
 bus rke
 properties
-	SecurityEnforcementProperties::exposed => true;
+	SecurityEnforcementProperties::Exposed => true;
 end rke;
 
 bus tpms
 properties
-	SecurityEnforcementProperties::exposed => true;
+	SecurityEnforcementProperties::Exposed => true;
 end tpms;
 
 bus cellular
 properties
-	SecurityEnforcementProperties::exposed => true;
+	SecurityEnforcementProperties::Exposed => true;
 end cellular;
 
 bus radio
 properties
-	SecurityEnforcementProperties::exposed => true;
+	SecurityEnforcementProperties::Exposed => true;
 end radio;
 
 

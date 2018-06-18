@@ -5,7 +5,6 @@ property set UserDefinedSecurityConstants is
 -- Security classification labels
 -- Can be used instead of strings to assign values.
 -- If labels change users want to change them in the model, i.e., we can map the constants to old strings.
--- Alternatively we can to that mapping on the resolute side, so we do not have to change the Reoslute code due to label change.
 
 
 	TopSecret: constant aadlstring  => "Top Secret";
@@ -13,5 +12,12 @@ property set UserDefinedSecurityConstants is
 	Confidential: constant aadlstring  => "Confidential";
 	Unclassified: constant aadlstring  => "Unclassified";
 
+	IncreasingSecurityClearanceOrdering: constant list of aadlstring => 
+	(UserDefinedSecurityConstants::Unclassified, UserDefinedSecurityConstants::Confidential,
+		UserDefinedSecurityConstants::Secret,UserDefinedSecurityConstants::TopSecret);
+
+	IncreasingInformationSecurityLevelOrdering: constant list of aadlstring => 
+	(UserDefinedSecurityConstants::Unclassified, UserDefinedSecurityConstants::Confidential,
+		UserDefinedSecurityConstants::Secret,UserDefinedSecurityConstants::TopSecret);
 
 end UserDefinedSecurityConstants; 

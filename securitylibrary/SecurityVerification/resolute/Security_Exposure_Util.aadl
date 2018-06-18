@@ -34,7 +34,7 @@ public
 	runs_on_partition_enforced_memory_os(p : process) <=
 	  ** p " runs on " os " that  enforces partition level memory access"**
 	  let os : string = property(p, SecurityEnforcementProperties::OS,"none");
-	  member(os ,PartitionEnforcedMemoryOSes)
+	  member(os ,Userdefined_Resolute_Constants::Userdefined_Resolute_Constants_public::Resolute::Resolute::VirtualMemoryOSes)
 
   
 	memory_safe_language_thread(t : thread) <=

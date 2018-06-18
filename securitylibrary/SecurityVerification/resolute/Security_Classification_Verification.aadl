@@ -1,6 +1,6 @@
 -- Copyright 2018 Carnegie Mellon University. See Notice.txt
 -- Distribution Statement A: Approved for Public Release; Distribution is Unlimited.
-package Security_Level_Verification
+package Security_Classification_Verification
 public
 	annex Resolute {**
 
@@ -290,4 +290,4 @@ public
 		fail ** higher " cannot handle "lower " security level or need to know domains" **
   
 	**};
-end Security_Level_Verification;
+end Security_Classification_Verification;

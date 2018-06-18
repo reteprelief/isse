@@ -4,7 +4,7 @@ property set SecurityClassificationProperties is
 	with EMV2; -- may want to reduce the all to specific component categories
 
 	-- component is trusted
-	Trusted : aadlboolean => false applies to (all);
+	Trusted : aadlboolean applies to (all);
 
 -- Security Classifications
 --

@@ -1,15 +1,15 @@
 global requirements SecurityReqs
 [
 	// first requirement will be refined into two more specific requirements (directly below)
-	requirement BusSecurity : "Security requirements on bus" for bus [
+	requirement BusSecurity : "Security requirements on bus" for root [
 		description "Secure use of bus"
 	]
 	requirement SharedBusSecurity : "Security requirements on components sharing a bus" for bus [
 		description "security levels/domains on connected components must be the same"
 		refines BusSecurity
 	]
-	requirement NoRelayChannelSecurity : "Security requirements on component acting as relay channel" for component [
-		description "component connected to two buses cannot act as relay channel violating security levels/domains used on the two buses"
+	requirement SystemHasNoRelayChannel : "Security requirements on component acting as relay channel" for root [
+		description "No hardware component in the system that is connected to two buses can act as relay channel across security clearance levels and security domains used by components connected to each of the two buses"
 		refines BusSecurity
 	]
 	

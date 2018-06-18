@@ -10,18 +10,16 @@ property set SecurityEnforcementProperties is
 --
 -- We have enforcement mechanism related properties: encryption, authentication, space and time partition enfrocement
 ----------------------------------------------
-	
-	-- external exposure of component, physical or some other form
-	Exposed : aadlboolean applies to (bus, virtual bus, processor, device, system, memory);
-
 	-- name of the operating system used
 	-- associated with the application component, the virtual processor, or processor/(hardware) system
   	OS: aadlstring applies to (all);
   	
-  	-- name of the programming language used. associated with an applicaiton component
+  	-- name of the programming language used. associated with an application component
   	Language: aadlstring applies to (all);
-  	
-  	Authenticator: aadlboolean applies to (all);
+	
+	-- external exposure of component, physical or some other form
+	Exposed : aadlboolean applies to (bus, virtual bus, processor, device, system, memory);
+
   	
 -- Cryptography (authentication, encryption, etc.) 
   --
@@ -50,7 +48,9 @@ property set SecurityEnforcementProperties is
     		--  Authenticated encryption (AE) and authenticated encryption with associated data (AEAD, variant of AE)
     		--  provide confidentiality, integrity, and authenticity
 	);
-	--
+  	
+  	Authenticator: aadlboolean applies to (all);
+
 	AuthenticationTypeAccess: enumeration (NoValue, single_password, smart_card,  ip_addr, two_factor, multi_layered, bio_metric) 
 	applies to (all);
 	--
