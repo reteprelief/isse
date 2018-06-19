@@ -1,0 +1,60 @@
+verification plan SecurityVerificationPlan for SecurityReqs [
+	claim BusSecurity [
+		claim SharedBusSecurity [
+			activities
+			sharedBuscheckClearance : SecurityClassificationResolute.SharedBusHardwareSameSecurityClearance ( )
+			sharedBuscheckLevel : SecurityClassificationResolute.SharedBusHardwareSameInformationSecurityLevels ( )
+			sharedBuscheckDomain : SecurityClassificationResolute.SharedBusHardwareSameSecurityDomain ( )
+		] 
+		
+		claim SystemHasNoRelayChannel [
+			activities
+			globalRelayChannelCheck: SecurityClassificationResolute.ForallHardwareRelayChannelBetweenBuses()
+//			relayChannelcheck : SecurityLevelsResolute.RelayChannelBetweenBuses ( )
+		]
+	]
+
+	claim SharedMemory [
+		activities
+		sharedMemorycheckLevel : SecurityClassificationResolute.SharedMemorySameSecurityLevels ( )
+	]
+
+	claim SharedProcessor [
+		activities
+		sharedProcessorcheck : SecurityClassificationResolute.SharedProcessorSameSecurityLevels ( )
+	]
+	claim SharedDataComponent [
+		activities
+		checkConcurrency : SecurityExposureResolute.SharedDataComponentsUseConcurrencyControl ( )
+	]
+
+	claim SecurePortConnection [
+		activities
+		//	handled by global requirement above
+		//	    checkPortConnection: SecurityLevelsResolute.PortConnectionSameSecurityLevel()
+		// may need to fix Java linkage to OSATE classes (restart workspace in dev environment)
+		//		checkExposedConnectionEncrypted: SecurityVerificationMethods.ExposedConnectionEncrypted()
+		checkEncryptionExposedHardware : SecurityExposureResolute.UseEncryptionOverExposedHardware ( )
+		checkEncryptionAcrossProcessors : SecurityExposureResolute.ConnectionAcrossProcessorsIsEncrypted ( )
+		checkNoBufferOverflow : SecurityExposureResolute.ConnectionNoBufferOverflow ( )
+		checkDataModel : SecurityExposureResolute.ConsistentDataModelSpecOnConnection ( )
+		checkConsistentUnclassifiedConnection : SecurityExposureResolute.ConsistentUnclassifiedInformationConnection ( )
+		checkEncryptedClassifiedConnection : SecurityExposureResolute.EncryptedClassifiedInformationConnection ( )
+	]
+
+	claim SharedVirtualProcessor [
+		activities
+		sharedVirtualProcessorcheck : SecurityClassificationResolute.SharedVirtualProcessorSameSecurityLevels ( )
+	]
+	claim ProcessSecurity [
+		activities
+		ThreadsInProcesscheck : SecurityClassificationResolute.ThreadsInSameProcessSameSecurityLevels ( )
+	]
+
+	claim ComponentSecurity [
+		activities
+		componentFeaturescheck : SecurityClassificationResolute.FeatureSecurityLevelsAndNeedToKnowDomainsAreSupportedByComponent ( )
+//		portsEncrypted: SecurityExposureResolute.AllComponentPortsEncrypted ()
+
+	]
+]

@@ -1,0 +1,39 @@
+global requirements SecurityReqs
+[
+	// first requirement will be refined into two more specific requirements (directly below)
+	requirement BusSecurity : "Security requirements on bus" for bus [
+		description "Secure use of bus"
+	]
+	requirement SharedBusSecurity : "Security requirements on components sharing a bus" for bus [
+		description "security levels/domains on connected components must be the same"
+		refines BusSecurity
+	]
+	requirement SystemHasNoRelayChannel : "Security requirements on component acting as relay channel" for root [
+		description "No hardware component in the system that is connected to two buses can act as relay channel across security clearance levels and security domains used by components connected to each of the two buses"
+		refines BusSecurity
+	]
+	
+	// the next requirements are not decomposed in some case
+	requirement SharedMemory : "different security levels on shared bus" for memory [
+		description "component bound to same memory must have same security level"
+	]
+	requirement SharedProcessor : "different security levels on shared processor" for processor [
+		description "component bound to same processor must have same security level"
+	]
+	requirement SharedVirtualProcessor : "different security levels on shared virtual processor" for virtual processor [
+		description "component bound to same processor must have same security level"
+	]
+	requirement ProcessSecurity : "threads in process with same security level" for process [
+		description "threads in process must have same security level"
+	]
+	requirement SharedDataComponent : "concurrency control on shared data" for data [
+		description "concurrency control on shared data"
+	]
+	requirement ComponentSecurity : "feature security level must be supported by component" for component [
+		description "feature security level must be supported by component"
+	]
+	requirement SecurePortConnection : "Port connections meet security requirements" for connection [
+		description "Each port connection meets several security verifications"
+//		when securityverification.SecurityVerification.isPortConnection()
+	]
+]

@@ -1,0 +1,88 @@
+-- Copyright 2018 Carnegie Mellon University. See Notice.txt
+-- Distribution Statement A: Approved for Public Release; Distribution is Unlimited.
+
+property set SecurityEnforcementProperties is
+
+----------------------------------------------
+-- Enforcement Properties focus on characterizing the platform and its support for security enforcement
+--
+-- We have exposure to external security risks
+--
+-- We have enforcement mechanism related properties: encryption, authentication, space and time partition enfrocement
+----------------------------------------------
+	-- name of the operating system used
+	-- associated with the application component, the virtual processor, or processor/(hardware) system
+  	OS: aadlstring applies to (all);
+  	
+  	-- name of the programming language used. associated with an application component
+  	Language: aadlstring applies to (all);
+	
+	-- external exposure of component, physical or some other form
+	Exposed : aadlboolean applies to (bus, virtual bus, processor, device, system, memory);
+
+  	
+-- Cryptography (authentication, encryption, etc.) 
+  --
+  -- A property to indicate some form of encryption is used.
+  --
+	Encryption: aadlboolean applies to (all);
+  --
+  --  
+	EncryptionScheme : SecurityEnforcementProperties::EncryptionType applies to (all);
+  --
+	EncryptionType : type record 
+	(
+		encryption_form 	: enumeration (symmetric, asymmetric, hybrid, authenticated_encryption, no_encryption, AEAD);
+		algorithm 			: enumeration (tripledes, des, rsa, blowfish, twofish, aes, D_H, clear);
+		private_key 		: aadlstring;  -- maybe better as an integer?
+		public_key 		 	: aadlstring;
+		single_key          : aadlstring;
+		authentication_type : enumeration (EtM, MtE, E_and_M, AEAD);
+		MAC_key				: aadlstring;
+    		
+    		-- MAC: message authentication code 
+    		-- EtM: encrypt-then-MAC  
+   			-- MtE: MAC-then-Encrypt
+    		-- E&M: encrypt and MAC
+    		--
+    		--  Authenticated encryption (AE) and authenticated encryption with associated data (AEAD, variant of AE)
+    		--  provide confidentiality, integrity, and authenticity
+	);
+  	
+  	Authenticator: aadlboolean applies to (all);
+
+	AuthenticationTypeAccess: enumeration (NoValue, single_password, smart_card,  ip_addr, two_factor, multi_layered, bio_metric) 
+	applies to (all);
+	--
+	--  two_factor is a subset of multi_layered but is included since it is a prevalent multi-layered type.
+	--
+	-- The NoValue entry is used as the default in the Resolute built-in property function,   
+	-- i.e., property (namedelement, property, default value* )
+	--
+	AuthenticationProtocol: enumeration (NoValue, cert_services, EAP, PAP, SPAP, CHAP, MS_CHAP, Radius, IAS, Kerberos, SSL, NTLM)  applies to (all); 
+	--
+	-- The NoValue entry is used as the default in the Resolute built-in property function,   
+	-- i.e., property (namedelement, property, default value* )
+	--
+	--	  The Password Authentication Protocol (PAP)
+	--    The Shiva PAP (SPAP)
+	--    Challenge Handshake Authentication Protocol (CHAP)
+	--    Microsoft CHAP (MS-CHAP)
+	--    The Extensible Authentication Protocol (EAP)
+	--	  Remote Authentication Dial-In User Service (RADIUS) 
+	--	  Internet Authentication Service (IAS)
+	--	  Secure Socket Layer (SSL)
+	-- 	  NT LAN Manager (NTLM)
+	--    Kerberos
+	--    Certificate services
+	--
+
+    --  Operation mode for block cipher algorithms.
+    --  See. https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation
+    BlockCipherMode: SecurityEnforcementProperties::SupportedOperationModeTypes applies to  (port, virtual bus, bus, memory, access);
+
+	SupportedOperationModeTypes : type enumeration (ecb, cbc, pcbc, cfb, ofb, ctr);
+
+
+
+end SecurityEnforcementProperties;

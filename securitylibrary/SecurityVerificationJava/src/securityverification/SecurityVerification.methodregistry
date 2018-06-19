@@ -1,0 +1,16 @@
+// Copyright 2016 Carnegie Mellon University. See Notice.txt
+// Distribution Statement A: Approved for Public Release; Distribution is Unlimited.
+verification methods SecurityVerificationMethods [
+	
+	method ExposedComponentConnectionsEncrypted(component)report: "Check that all connections owned by a given component are encrypted if going over exposed physical components" [
+		java securityverification.SecurityVerification.allExposedConnectionsEncrypted
+		description "Check that all connections are encrypted if going over exposed physical components"
+	] 
+
+	
+	method ExposedConnectionEncrypted(connection)boolean: "Check that all connections owned by a given component are encrypted if going over exposed physical components" [
+		java securityverification.SecurityVerification.exposedConnectionEncrypted
+		description "Check that all connections are encrypted if going over exposed physical components"
+	] 
+
+]

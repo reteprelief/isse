@@ -1,0 +1,55 @@
+package ApplicationSystems
+public
+	with SecurityClassificationProperties;
+	device sensor
+		features
+			outp: out data port;
+	end sensor;
+	device actuator
+		features
+			inp: in data port;
+	end actuator;
+	abstract controller
+		features
+			inp: in data port;
+			outp: out data port;
+	end controller;
+	abstract implementation controller.i
+		subcomponents
+			t1: thread cthread;
+			t2: thread cthread;
+			tg1: thread group tg.i;
+	end controller.i;
+	thread group tg
+		features
+			inp: in data port;
+			outp: out data port;
+	end tg;
+	thread group implementation tg.i
+		subcomponents
+			tgt1: thread cthread;
+			tgt2: thread cthread;
+	end tg.i;
+	thread cthread
+		features
+			inp: in data port;
+			outp: out data port;
+	end cthread;
+	
+	system ControlSystem
+		
+	end ControlSystem;
+	
+	system implementation ControlSystem.impl
+		subcomponents
+			sense: device sensor{SecurityClassificationProperties::SecurityClearance => UserDefinedSecurityConstants::Unclassified;};
+			actuate: device actuator{SecurityClassificationProperties::SecurityClearance => UserDefinedSecurityConstants::Unclassified;};
+			control: abstract controller.i{SecurityClassificationProperties::SecurityClearance => UserDefinedSecurityConstants::Secret;};
+		connections
+			c1: port sense.outp -> control.inp;
+			c2: port control.outp -> actuate.inp;
+annex resolute {**
+	prove (check_mils_policy(this) )
+**};
+	end ControlSystem.impl;
+end ApplicationSystems;
