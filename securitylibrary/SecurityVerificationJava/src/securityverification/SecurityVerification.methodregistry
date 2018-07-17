@@ -3,14 +3,12 @@
 verification methods SecurityVerificationMethods [
 	
 	method ExposedComponentConnectionsEncrypted(component)report: "Check that all connections owned by a given component are encrypted if going over exposed physical components" [
-		java securityverification.SecurityVerification.allExposedConnectionsEncrypted
-		description "Check that all connections are encrypted if going over exposed physical components"
+		java securityverification.SecurityExposureVerification.allExposedConnectionsEncrypted
 	] 
 
 	
 	method ExposedConnectionEncrypted(connection)boolean: "Check that all connections owned by a given component are encrypted if going over exposed physical components" [
-		java securityverification.SecurityVerification.exposedConnectionEncrypted
-		description "Check that all connections are encrypted if going over exposed physical components"
+		java securityverification.SecurityExposureVerification.exposedConnectionEncrypted
 	] 
 
 ]
