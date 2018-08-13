@@ -10,6 +10,25 @@ public
 	
 	with OperationalEnvironment_pkg;
 	
+				system airframe
+			features
+		-- access features
+				internalWirelessNetworkAccess: provides bus access AircraftAirframe_pkg::internalWirelessNetwork;
+				satelliteDataLinkAccess: requires bus access OperationalEnvironment_pkg::stellitebus;
+			    closedNetworkAccess: requires bus access AircraftAirframe_pkg::closedNetwork;
+			    aircraftDataNetworkAccess: provides bus access AircraftAirframe_pkg::aircraftDataNetwork;
+		-- data 
+				closedNetworkInterface: in out data port ;
+				internalwirelessInterface: in out event data port ;
+	end airframe;
+	
+	system implementation airframe.basic
+		subcomponents
+			satelliteAntenna: device AircraftAirframe_pkg::satelliteAntenna;
+			internalWirelessNetwork: bus AircraftAirframe_pkg::internalWirelessnetwork;
+	end airframe.basic;
+--
+	
 		-- The satellite antenna is included as part of the aircraft's airframe, distinct from the three 'operational' domains.
 	
 	device satelliteAntenna

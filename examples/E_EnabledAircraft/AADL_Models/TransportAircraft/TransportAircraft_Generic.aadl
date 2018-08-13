@@ -39,7 +39,7 @@ system transportAircraft
 			aircraft_control_systems: system AircraftControl_pkg::aircraftControl;
 			airline_information_services: system AirlineInformationServices_pkg::AirlineInformationServices;
 			passenger_info_entertainment_services: system PassengerInfoEntertainmentServices_pkg::passengerInfoEntertainmentServices;
-			airframe: system airframe.basic;
+			airframe: system AircraftAirframe_pkg::airframe.basic;
 		connections
 				-- bus access
 			closedNetworkConnWithAirframe: bus access aircraft_control_systems.closedNetworkAccess <-> airframe.closedNetworkAccess;
@@ -60,22 +60,5 @@ system transportAircraft
 	end transportAircraft.generic;
 	
 	
-			system airframe
-			features
-		-- access features
-				internalWirelessNetworkAccess: provides bus access AircraftAirframe_pkg::internalWirelessNetwork;
-				satelliteDataLinkAccess: requires bus access OperationalEnvironment_pkg::stellitebus;
-			    closedNetworkAccess: requires bus access AircraftAirframe_pkg::closedNetwork;
-			    aircraftDataNetworkAccess: provides bus access AircraftAirframe_pkg::aircraftDataNetwork;
-		-- data 
-				closedNetworkInterface: in out data port ;
-				internalwirelessInterface: in out event data port ;
-	end airframe;
-	
-	system implementation airframe.basic
-		subcomponents
-			satelliteAntenna: device AircraftAirframe_pkg::satelliteAntenna;
-			internalWirelessNetwork: bus AircraftAirframe_pkg::internalWirelessnetwork;
-	end airframe.basic;
 --
 end TransportAircraft_Generic;
