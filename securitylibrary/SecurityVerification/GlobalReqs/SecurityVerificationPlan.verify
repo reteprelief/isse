@@ -2,26 +2,26 @@ verification plan SecurityVerificationPlan for SecurityReqs [
 	claim BusSecurity [
 		claim SharedBusSecurity [
 			activities
-			sharedBuscheckClearance : SecurityClassificationResolute.SharedBusHardwareSameSecurityClearance ( )
-			sharedBuscheckLevel : SecurityClassificationResolute.SharedBusHardwareSameInformationSecurityLevels ( )
-			sharedBuscheckDomain : SecurityClassificationResolute.SharedBusHardwareSameSecurityDomain ( )
+			sharedBuscheckClearance : SecurityClassification.SharedBusHardwareSameSecurityClearance ( )
+			sharedBuscheckLevel : SecurityClassification.SharedBusHardwareSameInformationSecurityLevels ( )
+			sharedBuscheckDomain : SecurityClassification.SharedBusHardwareSameSecurityDomain ( )
 		] 
 		
 		claim SystemHasNoRelayChannel [
 			activities
-			globalRelayChannelCheck: SecurityClassificationResolute.ForallHardwareRelayChannelBetweenBuses()
+			globalRelayChannelCheck: SecurityClassification.ForallHardwareRelayChannelBetweenBuses()
 //			relayChannelcheck : SecurityLevelsResolute.RelayChannelBetweenBuses ( )
 		]
 	]
 
 	claim SharedMemory [
 		activities
-		sharedMemorycheckLevel : SecurityClassificationResolute.SharedMemorySameSecurityLevels ( )
+		sharedMemorycheckLevel : SecurityClassification.SharedMemorySameSecurityLevels ( )
 	]
 
 	claim SharedProcessor [
 		activities
-		sharedProcessorcheck : SecurityClassificationResolute.SharedProcessorSameSecurityLevels ( )
+		sharedProcessorcheck : SecurityClassification.SharedProcessorSameSecurityLevels ( )
 	]
 	claim SharedDataComponent [
 		activities
@@ -44,17 +44,16 @@ verification plan SecurityVerificationPlan for SecurityReqs [
 
 	claim SharedVirtualProcessor [
 		activities
-		sharedVirtualProcessorcheck : SecurityClassificationResolute.SharedVirtualProcessorSameSecurityLevels ( )
+		sharedVirtualProcessorcheck : SecurityClassification.SharedVirtualProcessorSameSecurityLevels ( )
 	]
 	claim ProcessSecurity [
 		activities
-		ThreadsInProcesscheck : SecurityClassificationResolute.ThreadsInSameProcessSameSecurityLevels ( )
+		ThreadsInProcesscheck : SecurityClassification.ThreadsInSameProcessSameSecurityLevels ( )
 	]
 
 	claim ComponentSecurity [
 		activities
-		componentFeaturescheck : SecurityClassificationResolute.FeatureSecurityLevelsAndNeedToKnowDomainsAreSupportedByComponent ( )
-//		portsEncrypted: SecurityExposureResolute.AllComponentPortsEncrypted ()
+		componentFeaturescheck : SecurityClassification.FeatureSecurityLevelsAndNeedToKnowDomainsAreSupportedByComponent ( )
 
 	]
 ]
