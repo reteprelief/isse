@@ -3,6 +3,10 @@
 	<name>E_EnabledAircraft</name>
 	<comment></comment>
 	<projects>
+		<project>SecuirtyALISAExamples_dpg</project>
+		<project>SecuirtyAnnex</project>
+		<project>SecurityVerification</project>
+		<project>SecurityVerificationJava</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
