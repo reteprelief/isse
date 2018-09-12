@@ -1,0 +1,45 @@
+case MissionAircraftAssuranceCase [
+	model MissionAircraftAssuranceCase.MissionAircraftAssurancePlan for MissionAircraft_Generic::missionAircraft.generic
+			[
+		claim MissionAircraftSecurityVerificationPlan # MasterSecurityReq1 [
+		]
+		claim MissionAircraftSecurityVerificationPlan # MasterSecurityReq2 [
+		]
+		claim MissionAircraftSecurityVerificationPlan # MasterSecurityReq3 [
+		]
+		claim MissionAircraftSecurityVerificationPlan # AircraftSystemsInformationSecurity [
+		]
+		claim MissionAircraftSecurityVerificationPlan # ExternalEncryption [
+		]
+		claim MissionAircraftSecurityVerificationPlan # InternalEncryption [
+		]
+		claim MissionAircraftSecurityVerificationPlan # SecureMissionDataEncrypt [
+		]
+		claim MissionAircraftSecurityVerificationPlan # SecureMissionDataClassify [
+		]
+		subsystem aircraft_control_systems [
+		]
+		subsystem mission_systems [
+			subsystem DataAquisitionUnits [
+			]
+			subsystem DataStructuringUnits [
+			]
+			subsystem SecurityDownGraderL1L2 [
+			]
+			subsystem SecurityDownGraderL2L3 [
+			]
+			subsystem L1DataStore [
+			]
+			subsystem L2DataStore [
+			]
+			subsystem L3DataStore [
+			]
+		]
+		subsystem airframe [
+			subsystem internalWirelessNetwork [
+			]
+			subsystem satelliteAntenna [
+			]
+		]
+	]
+]
