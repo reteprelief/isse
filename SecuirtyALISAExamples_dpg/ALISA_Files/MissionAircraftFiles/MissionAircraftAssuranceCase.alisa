@@ -4,7 +4,7 @@ assurance case MissionAircraftAssuranceCase for MissionAircraft_Generic::mission
 [
 	assurance plan MissionAircraftAssurancePlan for MissionAircraft_Generic::missionAircraft.generic
 	[
-		assure MissionAircraftSecurityVerificationPlan 
+		assure MissionAircraftSecurityPoliciesVerificationPlan MissionAircraftSecurityVerificationPlan
 		 
 		assume subsystem aircraft_control_systems airframe mission_systems
 	]

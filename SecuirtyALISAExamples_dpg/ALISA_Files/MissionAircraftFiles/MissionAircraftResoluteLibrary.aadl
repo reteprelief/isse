@@ -16,7 +16,7 @@ annex Resolute
     ** " component " cp " has information security level L3"  **
  	get_information_security_level(cp) = "L3"
 		
-		
+			
 	**};
 	
 end MissionAircraftResoluteLibrary;

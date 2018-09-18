@@ -6,26 +6,26 @@ case TransportAircraftAssuranceCase [
 		claim TransportAircraftSecurityPolicyVerificationPlan # Security [
 			tbdcount 1
 			verification TransportAircraftSecurityPolicyVerificationPlan # Security # ConfirmCertifications [
-				executionstate todo resultstate tbd tbdcount 1 time 437
+				executionstate todo resultstate tbd tbdcount 1 time 406
 			]
 		]
 		claim TransportAircraftSecurityPolicyVerificationPlan # MasterSecurityPolicy [
 			tbdcount 1
 			verification TransportAircraftSecurityPolicyVerificationPlan # MasterSecurityPolicy # ReviewMasterSecurityPolicy [
-				executionstate todo resultstate tbd tbdcount 1 time 78
+				executionstate todo resultstate tbd tbdcount 1 time 62
 			]
 		]
 		claim TransportAircraftSecurityPolicyVerificationPlan # AccessControlPolicy [
 			tbdcount 1
 			verification TransportAircraftSecurityPolicyVerificationPlan # AccessControlPolicy # ReviewAccessControlPolicy [
-				executionstate todo resultstate tbd tbdcount 1 time 62
+				executionstate todo resultstate tbd tbdcount 1 time 63
 			]
 		]
 		claim TransportAircraftSecurityPolicyVerificationPlan # SecureCommunicationsPolicy [
 			tbdcount 1
 			verification TransportAircraftSecurityPolicyVerificationPlan # SecureCommunicationsPolicy #
 					ReviewAccessControlPolicy [
-				executionstate todo resultstate tbd tbdcount 1 time 63
+				executionstate todo resultstate tbd tbdcount 1 time 62
 			]
 		]
 		claim TransportAircraftSecurityVerificationPlan # MasterSecurityReq1 [
@@ -37,13 +37,13 @@ case TransportAircraftAssuranceCase [
 		claim TransportAircraftSecurityVerificationPlan # MasterSecurityReq2 [
 			tbdcount 1
 			verification TransportAircraftSecurityVerificationPlan # MasterSecurityReq2 # formalReview [
-				executionstate todo resultstate tbd tbdcount 1 time 78
+				executionstate todo resultstate tbd tbdcount 1 time 62
 			]
 		]
 		claim TransportAircraftSecurityVerificationPlan # MasterSecurityReq3 [
 			tbdcount 1
 			verification TransportAircraftSecurityVerificationPlan # MasterSecurityReq3 # formalReview [
-				executionstate todo resultstate tbd tbdcount 1 time 62
+				executionstate todo resultstate tbd tbdcount 1 time 63
 			]
 		]
 		claim TransportAircraftSecurityVerificationPlan # AircraftSystemsInformationSecurity [
@@ -51,8 +51,6 @@ case TransportAircraftAssuranceCase [
 		claim TransportAircraftSecurityVerificationPlan # ExternalEncryption [
 		]
 		claim TransportAircraftSecurityVerificationPlan # InternalEncryption [
-		]
-		claim AircraftControlSecurityVerificationPlan # communicationProtectionReq1 [
 		]
 		subsystem aircraft_control_systems [
 		]

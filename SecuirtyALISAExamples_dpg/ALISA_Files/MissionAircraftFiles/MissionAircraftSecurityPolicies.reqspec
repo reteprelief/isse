@@ -4,7 +4,8 @@
 // Distribution Statement A: Approved for Public Release; Distribution is Unlimited.
 //
 
-global requirements MissionAircraftSystemsSecurityPolicies: "System-Wide Security Policies for Mission-specific aircraft"
+system requirements MissionAircraftSecurityPolicies: "System-Wide Security Policies for Mission-specific aircraft"
+for MissionAircraft_Generic::missionAircraft.generic
 [
 	description "These are security policies for mission-specific aircraft."
 	

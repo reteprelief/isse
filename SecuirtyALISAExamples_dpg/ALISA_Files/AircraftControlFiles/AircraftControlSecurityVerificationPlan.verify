@@ -10,7 +10,6 @@ for AircraftConrolSecurityReqs
 	
 	claim communicationProtectionReq0
 	[
-		activities
 		
 	]
 	claim  communicationProtectionReq1

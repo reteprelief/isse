@@ -7,20 +7,23 @@ verification plan MissionAircraftSecurityVerificationPlan for MissionAircraftSec
 [
 	claim MasterSecurityReq1 
 	[
-		
+		activities 	
+ 	      formalReview: AircraftSecurityVerificationMethods.ReviewMasterSecurityPolicy ("Master Security Policy")
 	]
 	
 	claim MasterSecurityReq2
 	[
-		
+		activities
+ 		  formalReview: AircraftSecurityVerificationMethods.ReviewMasterSecurityPolicy ("Master Security Policy")
 	]
 	
 	claim MasterSecurityReq3
 	[
-		
+		activities
+ 	     formalReview: AircraftSecurityVerificationMethods.ReviewMasterSecurityPolicy ("Master Security Policy")
 	]
 	
-	claim AircraftSystemsInformationSecurity
+	claim AircraftInformationSecurity
 	[
 		
 	]
