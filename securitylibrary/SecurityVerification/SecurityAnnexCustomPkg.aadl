@@ -1,0 +1,83 @@
+-- Copyright 2019 Carnegie Mellon University. See Notice.txt
+-- Distribution Statement A: Approved for Public Release; Distribution is Unlimited.
+
+-- This package contains specific component and other AADL declarations for use in Security modeling and analysis.
+
+
+package SecurityAnnexCustomPkg
+
+public
+
+with SecurityEnforcementProperties;
+
+-- A 'key' is defined as an abstract component.	
+
+abstract key
+end key;
+
+-- extend abstract key to data classifiers
+
+	data symmetricKey extends key
+	properties
+		SecurityEnforcementProperties::keyLength => 256 bits;
+	end symmetricKey;
+	
+	data publicKey extends key
+	end publicKey;
+	
+	data privateKey extends key
+	end privateKey;
+	
+	data AESKey
+		properties
+			SecurityEnforcementProperties::keyLength => 256 bits;
+	end AESKey;
+	
+	-- certificate
+	abstract CertificateAbs
+	end CertificateAbs;
+	
+	data Certificate extends CertificateAbs
+	end Certificate;
+	
+	data subject
+	end subject;
+	
+	data implementation subject.certificate
+	end subject.certificate;
+	
+	data issuer
+	end issuer;
+	
+	data implementation issuer.certificate
+	end issuer.certificate;
+	
+	data periodOfValidity
+	end periodOfValidity;
+	
+	data implementation periodOfValidity.certificate
+	end periodOfValidity.certificate;
+	
+	data AdminInformation
+	end AdminInformation;
+	
+	data implementation AdminInformation.certificate
+	end AdminInformation.certificate;
+	
+	data extendedInformation
+	end extendedInformation;
+	
+	data implementation extendedInformation.certificate
+	end extendedInformation.certificate;
+	
+	data implementation Certificate.TLS_SSL
+		subcomponents
+			Subject: data subject.certificate;
+			Issuer: data issuer.certificate;
+			PeriodOfValidity: data periodOfValidity.certificate;
+			AdminInformation: data adminInformation.certificate;
+			ExtendedInformatio: data extendedInformation.certificate;
+	end Certificate.TLS_SSL;
+	
+	
+end SecurityAnnexCustomPkg;
