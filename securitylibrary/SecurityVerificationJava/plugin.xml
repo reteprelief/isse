@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.osate.pluginsupport.registeredjavaclasses">
+      <class
+            path="securityverification.Av2API">
+      </class>
+      <class
+            path="securityverification.SecurityExposureVerification">
+      </class>
+      <class
+            path="securityverification.SecurityExposureUtil">
+      </class>
+      <class
+            path="securityverification.SecurityClassificationUtil">
+      </class>
+   </extension>
+
+</plugin>
