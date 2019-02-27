@@ -2,12 +2,12 @@
 // Distribution Statement A: Approved for Public Release; Distribution is Unlimited.
 verification methods SecurityVerificationMethods [
 	
-	method ExposedComponentConnectionsEncrypted(component)report: "Check that all connections owned by a given component are encrypted if going over exposed physical components" [
+	method ExposedComponentConnectionsEncrypted(component): "Check that all connections owned by a given component are encrypted if going over exposed physical components" [
 		java securityverification.SecurityExposureVerification.allExposedConnectionsEncrypted
 	] 
 
 	
-	method ExposedConnectionEncrypted(connection)boolean: "Check that all connections owned by a given component are encrypted if going over exposed physical components" [
+	method ExposedConnectionEncrypted(connection): "Check that all connections owned by a given component are encrypted if going over exposed physical components" [
 		java securityverification.SecurityExposureVerification.exposedConnectionEncrypted
 	] 
 
