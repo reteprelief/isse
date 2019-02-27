@@ -24,7 +24,7 @@ verification methods AircraftSecurityVerificationMethods :
 	method VerifyEncryption (component): "verify that a component has encryption 
     A Resolute claim that the encryption property is true."
 	[
-		resolute Security_Resolute_Lib.Security_Resolute_Lib_public.Resolute.Resolute.has_encryption
+		resolute Security_Exposure_Verification.Security_Exposure_Verification_public.Resolute.Resolute.check_encrypted
 
 	    description "This confirms encryption."
 	

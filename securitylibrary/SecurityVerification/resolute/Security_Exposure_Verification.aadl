@@ -11,6 +11,23 @@ public
 	uses_virtual_buses_with_encryption (conn: connection) <=
 	** "connection is bound to at least one layer of encrypted virtual bus(es)" **
 	connection_binding_targets_encrypted(conn) 
+	
+
+----------------------------------
+-- Basic Encryption verification.
+----------------------------------
+	-- true if element has encryption property and its value is true. Otherwise:
+	-- If the element is a virtual see if all virtual buses it is bound to are encrypted
+	-- false if no layer (set of bound) of virtual buses supports encryption
+	check_encrypted(element : aadl) <=
+	** "Given model element has Encrypted property set to true"	**
+	is_encrypted(element)
+
+
+   -- true if model element has the encryption scheme property set
+   check_encryption_scheme (element: aadl) <=
+	** "Given model element has Encryption_Scheme property set"	**
+	has_encryption_scheme(element)
 
 ----------------------------------
 -- Encryption when hardware used by connections is physically exposed.

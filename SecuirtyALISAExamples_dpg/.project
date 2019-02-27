@@ -3,10 +3,7 @@
 	<name>SecuirtyALISAExamples_dpg</name>
 	<comment></comment>
 	<projects>
-		<project>AlisaPredefined</project>
 		<project>E_EnabledAircraft</project>
-		<project>Plugin_Resources</project>
-		<project>SecuirtyAnnex</project>
 		<project>SecurityVerification</project>
 		<project>SecurityVerificationJava</project>
 	</projects>
