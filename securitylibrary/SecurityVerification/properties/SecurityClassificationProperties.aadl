@@ -12,11 +12,11 @@ property set SecurityClassificationProperties is
 	-- security classification (e.g. Top Secret, Secret, Confidential)
 	-- and an optional supplemental security statement. 
 	--	
-	SecurityClearance: aadlstring 
-	applies to (device, system, bus, memory, processor,abstract);
+	SecurityClearance: inherit aadlstring 
+	applies to (system, device, processor, virtual processor, bus, virtual bus, thread,  subprogram, process, abstract);
 	--
-	SecurityClearanceSupplement: aadlstring
-	applies to (device, system, bus, memory, processor,abstract);
+	SecurityClearanceSupplement: inherit aadlstring
+	applies to (system, device, processor, virtual processor, bus, virtual bus, thread,  subprogram, process, abstract);
 	--
 	-- The secondary security clearance is provided in the event of multiple clearances 
 	-- (e.g. a clearance from two different agencies.) The secondary clearance also has a 
@@ -25,11 +25,11 @@ property set SecurityClassificationProperties is
 	-- No assumption is made about the relationship between the Security_Clearance property 
 	-- and the Secondary_Security_Clearance property.
 	--
-	SecondarySecurityClearance: aadlstring 
-	applies to (system, process, thread, data, processor, memory);
+	SecondarySecurityClearance: inherit aadlstring 
+	applies to (system, device, processor, virtual processor, bus, virtual bus, thread,  subprogram, process, abstract);
 	--	
-	SecondarySecurityClearanceSupplement: aadlstring
-	applies to (system, process, thread, data, processor, memory);
+	SecondarySecurityClearanceSupplement: inherit aadlstring
+	applies to (system, device, processor, virtual processor, bus, virtual bus, thread,  subprogram, process, abstract);
 	--
 -- Information Security Levels
 	--
@@ -39,13 +39,14 @@ property set SecurityClassificationProperties is
 	--
 	-- There are no secondary information security levels or caveats.
 	---
- 	InformationSecurityLevel: aadlstring applies to (all);
+ 	InformationSecurityLevel: aadlstring applies to (data, system, process, device, abstract);
  	--
     -- Information security caveats are treated as a single string.
 	-- For example, a US information caveat value may be "//SI/TK//RELIDO"
-	-- such that the combined level and caveats classification marking may be "TOP SECRET//SI/TK//RELIDO"
+	-- When the  security level and caveat classification are "Top Secret" and "//SI/TK//RELIDO" 
+	-- this specifies the concatenated classification "TOP SECRET//SI/TK//RELIDO"
 	--
-	InformationSecurityCaveats: type aadlstring;
+	InformationSecurityCaveats: aadlstring applies to (data, system, process, device, abstract);
 
 
 -- A security domain is the determining factor in the classification of an enclave of servers/computers. 

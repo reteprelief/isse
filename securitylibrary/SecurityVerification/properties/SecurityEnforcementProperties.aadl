@@ -14,42 +14,55 @@ property set SecurityEnforcementProperties is
 	-- associated with the application component, the virtual processor, or processor/(hardware) system
   	OS: aadlstring applies to (all);
   	
-  	-- name of the programming language used. associated with an application component
+  	-- name of the programming language used; associated with an application component
   	Language: aadlstring applies to (all);
 	
 	-- external exposure of component, physical or some other form
 	Exposed : aadlboolean applies to (bus, virtual bus, processor, device, system, memory);
 
-  	
 -- Cryptography (authentication, encryption, etc.) 
   --
   -- A property to indicate some form of encryption is used.
   --
-	Encryption: aadlboolean applies to (all);
+	Encryption: inherit aadlboolean applies to (data, abstract, system, bus, memory, device, processor, virtual processor, virtual bus, connection);
   --
-  --  
-	EncryptionScheme : SecurityEnforcementProperties::EncryptionType applies to (all);
+  -- 
+	EncryptionScheme : inherit SecurityEnforcementProperties::EncryptionType applies to (data, abstract, system, bus, memory, device, processor, virtual processor, virtual bus, connection);
   --
 	EncryptionType : type record 
 	(
-		encryption_form 	: enumeration (symmetric, asymmetric, hybrid, authenticated_encryption, no_encryption, AEAD);
-		algorithm 			: enumeration (tripledes, des, rsa, blowfish, twofish, aes, D_H, clear);
-		private_key 		: aadlstring;  -- maybe better as an integer?
-		public_key 		 	: aadlstring;
-		single_key          : aadlstring;
-		authentication_type : enumeration (EtM, MtE, E_and_M, AEAD);
-		MAC_key				: aadlstring;
-    		
+		encryption_form 	: enumeration (symmetric, asymmetric, hybrid, authenticated_encryption, no_encryption, AEAD, to_be_specified);
+		algorithm 			: enumeration (tripledes, des, rsa, blowfish, twofish, aes, D_H,  ECC, clear);
+		key_type			: SecurityEnforcementProperties::keyType; -- references a classifier
+		private_key 		: SecurityEnforcementProperties::keyInstance;  -- references an instance
+		public_key 		 	: SecurityEnforcementProperties::keyInstance; -- references an instance
+		single_key          : SecurityEnforcementProperties::keyInstance;  -- references an instance
+		MAC_key				: SecurityEnforcementProperties::keyInstance;  -- references an instance
+  		authentication_type : enumeration (EtM, MtE, E_and_M, AEAD);  	
+  			
     		-- MAC: message authentication code 
     		-- EtM: encrypt-then-MAC  
    			-- MtE: MAC-then-Encrypt
     		-- E&M: encrypt and MAC
-    		--
+    		-- ECC: elliptic curve cryptography
     		--  Authenticated encryption (AE) and authenticated encryption with associated data (AEAD, variant of AE)
-    		--  provide confidentiality, integrity, and authenticity
+    	
 	);
   	
-  	Authenticator: aadlboolean applies to (all);
+  	-- key related properties
+  	
+  	
+	keyLength: Size applies to (abstract, data);
+	cryptoPeriod: Time applies to (abstract, data);
+	keyType: type classifier (abstract, data);
+	keyInstance: type reference (data);
+	textType: enumeration (plainText, cipherText) applies to (abstract, data);
+
+-- certificate properties
+   
+ 	-- Authentication properties
+  	
+  	Authenticator: aadlboolean applies to (abstract, system, bus, memory, device, processor, virtual processor, virtual bus);
 
 	AuthenticationTypeAccess: enumeration (NoValue, single_password, smart_card,  ip_addr, two_factor, multi_layered, bio_metric) 
 	applies to (all);
@@ -79,10 +92,20 @@ property set SecurityEnforcementProperties is
 
     --  Operation mode for block cipher algorithms.
     --  See. https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation
+    
+    -- alternative authentication
+    
+    Authentication: SecurityEnforcementProperties::authenticationType applies to (abstract, system, bus, memory, device, processor, virtual processor, virtual bus);
+    
+    authenticationType: type record
+    (
+    	AuthenticationAccessType: enumeration (NoValue, single_password, smart_card,  ip_addr, two_factor, multi_layered, bio_metric, to_be_specified);
+    	AuthenticationProtocol: enumeration (NoValue, cert_services, EAP, PAP, SPAP, CHAP, MS_CHAP, Radius, IAS, Kerberos, SSL, NTLM, to_be_specified) ;
+    );
+   
     BlockCipherMode: SecurityEnforcementProperties::SupportedOperationModeTypes applies to  (port, virtual bus, bus, memory, access);
 
 	SupportedOperationModeTypes : type enumeration (ecb, cbc, pcbc, cfb, ofb, ctr);
-
-
+	
 
 end SecurityEnforcementProperties;
