@@ -1,17 +1,18 @@
 package securityverification;
 
-import static org.osate.result.util.ResultUtil.*;
-import static org.osate.xtext.aadl2.properties.util.InstanceModelUtil.*;
-import static securityverification.Av2API.*;
-import static org.osate.xtext.aadl2.properties.util.GetProperties.*;
-import static securityverification.SecurityExposureUtil.*;
+import static org.osate.result.util.ResultUtil.createResult;
+import static org.osate.xtext.aadl2.properties.util.InstanceModelUtil.getConnectionBinding;
+import static org.osate.xtext.aadl2.properties.util.InstanceModelUtil.isVirtualBus;
+import static securityverification.Av2API.addFailure;
+import static securityverification.Av2API.exists;
+import static securityverification.Av2API.forAll;
+import static securityverification.SecurityExposureUtil.isExposed;
+import static securityverification.SecurityExposureUtil.usesEncryption;
+
 import java.util.List;
 
-import org.eclipse.emf.ecore.EObject;
-import org.osate.aadl2.PortConnection;
 import org.osate.aadl2.instance.ComponentInstance;
 import org.osate.aadl2.instance.ConnectionInstance;
-import org.osate.aadl2.instance.InstanceObject;
 import org.osate.result.Result;
 
 public class SecurityExposureVerification {

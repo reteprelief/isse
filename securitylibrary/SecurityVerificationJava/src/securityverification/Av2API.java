@@ -175,7 +175,7 @@ public class Av2API {
 	
 	// convenience methods for recording Diagnostic issues
 	public static void addFailure(Result result, String failuremsg, NamedElement target) {
-		Diagnostic issue = ResultUtil.createFailure(failuremsg,target);
+		Diagnostic issue = ResultUtil.createErrorDiagnostic(failuremsg,target);
 		result.getDiagnostics().add(issue);
 	}
 	
