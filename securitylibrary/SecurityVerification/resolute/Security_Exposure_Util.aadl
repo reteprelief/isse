@@ -63,7 +63,7 @@ public
 	-- If the element is a virtual see if all virtual buses it is bound to are encrypted
 	-- false if no layer (set of bound) of virtual buses supports encryption
 	is_encrypted (element : aadl) : bool =
-	property(element,SecurityEnforcementProperties::Encryption,false)
+	property(element,SecurityEnforcementProperties::Encryption,[EncryptionScheme => symmetric;])
 	or ( ( element instanceof virtual_bus or element instanceof connection)
 		 and forall (vb2 : {bvb for (bvb:virtual_bus)| is_bound_to (element, bvb)}). is_encrypted (vb2)
 		)

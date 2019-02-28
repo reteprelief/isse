@@ -39,14 +39,14 @@ property set SecurityClassificationProperties is
 	--
 	-- There are no secondary information security levels or caveats.
 	---
- 	InformationSecurityLevel: aadlstring applies to (data, system, process, device, abstract);
+ 	InformationSecurityLevel: inherit aadlstring applies to (data, system, process, device, abstract);
  	--
     -- Information security caveats are treated as a single string.
 	-- For example, a US information caveat value may be "//SI/TK//RELIDO"
 	-- When the  security level and caveat classification are "Top Secret" and "//SI/TK//RELIDO" 
 	-- this specifies the concatenated classification "TOP SECRET//SI/TK//RELIDO"
 	--
-	InformationSecurityCaveats: aadlstring applies to (data, system, process, device, abstract);
+	InformationSecurityCaveats: inherit aadlstring applies to (data, system, process, device, abstract);
 
 
 -- A security domain is the determining factor in the classification of an enclave of servers/computers. 

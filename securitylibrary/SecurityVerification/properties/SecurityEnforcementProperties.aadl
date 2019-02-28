@@ -24,10 +24,10 @@ property set SecurityEnforcementProperties is
   --
   -- A property to indicate some form of encryption is used.
   --
-	Encryption: inherit aadlboolean applies to (data, abstract, system, bus, memory, device, processor, virtual processor, virtual bus, connection);
+--	Encryption: inherit aadlboolean applies to (data, abstract, system, bus, memory, device, processor, virtual processor, virtual bus, connection);
   --
   -- 
-	EncryptionScheme : inherit SecurityEnforcementProperties::EncryptionType applies to (data, abstract, system, bus, memory, device, processor, virtual processor, virtual bus, connection);
+	Encryption : inherit SecurityEnforcementProperties::EncryptionType applies to (data, abstract, system, bus, memory, device, processor, virtual processor, virtual bus, connection);
   --
 	EncryptionType : type record 
 	(
