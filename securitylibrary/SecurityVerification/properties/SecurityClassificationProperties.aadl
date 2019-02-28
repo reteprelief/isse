@@ -13,10 +13,10 @@ property set SecurityClassificationProperties is
 	-- and an optional supplemental security statement. 
 	--	
 	SecurityClearance: inherit aadlstring 
-	applies to (system, device, processor, virtual processor, thread,  subprogram, process, abstract);
+	applies to (system, device, processor, virtual processor, bus, virtual bus, thread,  subprogram, process, abstract);
 	--
 	SecurityClearanceSupplement: inherit aadlstring
-	applies to (system, device, processor, virtual processor, thread,  subprogram, process, abstract);
+	applies to (system, device, processor, virtual processor, bus, virtual bus, thread,  subprogram, process, abstract);
 	--
 	-- The secondary security clearance is provided in the event of multiple clearances 
 	-- (e.g. a clearance from two different agencies.) The secondary clearance also has a 
@@ -26,10 +26,10 @@ property set SecurityClassificationProperties is
 	-- and the Secondary_Security_Clearance property.
 	--
 	SecondarySecurityClearance: inherit aadlstring 
-	applies to (system, device, processor, virtual processor, thread,  subprogram, process, abstract);
+	applies to (system, device, processor, virtual processor, bus, virtual bus, thread,  subprogram, process, abstract);
 	--	
 	SecondarySecurityClearanceSupplement: inherit aadlstring
-	applies to (system, device, processor, virtual processor, thread,  subprogram, process, abstract);
+	applies to (system, device, processor, virtual processor, bus, virtual bus, thread,  subprogram, process, abstract);
 	--
 -- Information Security Levels
 	--

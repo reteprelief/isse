@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>E_EnabledAircraft</name>
+	<name>SecuirtyALISAExamples_dpg</name>
 	<comment></comment>
 	<projects>
-		<project>SecuirtyALISAExamples_dpg</project>
+		<project>E_EnabledAircraft</project>
 		<project>SecurityVerification</project>
 		<project>SecurityVerificationJava</project>
 	</projects>
@@ -15,7 +15,7 @@
 		</buildCommand>
 	</buildSpec>
 	<natures>
-		<nature>org.osate.core.aadlnature</nature>
 		<nature>org.eclipse.xtext.ui.shared.xtextNature</nature>
+		<nature>org.osate.core.aadlnature</nature>
 	</natures>
 </projectDescription>

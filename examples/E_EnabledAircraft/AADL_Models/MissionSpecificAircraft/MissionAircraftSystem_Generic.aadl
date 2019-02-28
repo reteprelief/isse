@@ -1,0 +1,13 @@
+--
+-- Copyright 2018 Carnegie Mellon University. See Notice.txt
+-- Distribution Statement A: Approved for Public Release; Distribution is Unlimited.
+
+--	This is a generic mission-specific aircraft architecture based upon security domains of aircraft control (AC), 
+--  missions systems (MS), and communications (Comm) plus  airframe.
+--
+--
+
+package MissionAircraftSystem_Generic
+public
+	
+end MissionAircraftSystem_Generic;
