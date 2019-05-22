@@ -13,8 +13,8 @@ public
    is_exposed(el : aadl) : bool =
    property (el, SecurityEnforcementProperties::Exposed,true) 
 
-   is_authenticator(c : component) : bool =
-  	property(c, SecurityEnforcementProperties::Authenticator,false)
+--   is_authenticator(c : component) : bool =
+--  	property(c, SecurityEnforcementProperties::Authenticator,false)
 
 	
 ----------------------------------
@@ -63,14 +63,14 @@ public
 	-- If the element is a virtual see if all virtual buses it is bound to are encrypted
 	-- false if no layer (set of bound) of virtual buses supports encryption
 	is_encrypted (element : aadl) : bool =
-	property(element,SecurityEnforcementProperties::Encryption,[EncryptionScheme => symmetric;])
+	has_property(element,SecurityEnforcementProperties::Encryption)
 	or ( ( element instanceof virtual_bus or element instanceof connection)
 		 and forall (vb2 : {bvb for (bvb:virtual_bus)| is_bound_to (element, bvb)}). is_encrypted (vb2)
 		)
 
     
    has_encryption_scheme (element: aadl) : bool =
-   has_property (element,SecurityEnforcementProperties::EncryptionScheme)
+   has_property (element,SecurityEnforcementProperties::Encryption)
 
 	-- connection binding targets (virtual bus or hardwaare) are either not exposed or are encrypted.
 	-- for a virtual bus target if it is not encrypted we examine its conneciton binding targets.

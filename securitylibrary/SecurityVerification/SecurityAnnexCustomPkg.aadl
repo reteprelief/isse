@@ -19,7 +19,7 @@ end key;
 
 	data symmetricKey extends key
 	properties
-		SecurityEnforcementProperties::keyLength => 128 bits;
+		SecurityEnforcementProperties::key_Length => 128 bits;
 	end symmetricKey;
 	
 	data publicKey extends key
@@ -30,7 +30,7 @@ end key;
 	
 	data AESKey256 extends symmetricKey
 		properties
-			SecurityEnforcementProperties::keyLength => 256 bits;
+			SecurityEnforcementProperties::key_Length => 256 bits;
 	end AESKey256;
 	
 	-- certificate

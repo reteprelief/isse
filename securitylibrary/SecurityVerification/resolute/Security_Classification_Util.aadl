@@ -96,10 +96,10 @@ public
  	publicdomain : string = "public domain"
  
  	has_security_domain (cp:aadl) : bool =
-	has_property(cp, SecurityClassificationProperties::SecurityDomain) 
+	has_property(cp, SecurityClassificationProperties::Security_Domain) 
 	--
 	get_security_domain (cp: aadl) : string =
- 	property (cp, SecurityClassificationProperties::SecurityDomain, publicdomain) 
+ 	property (cp, SecurityClassificationProperties::Security_Domain, publicdomain) 
 
 	is_same_security_domain (element1 : aadl, element2 : aadl) : bool = 
 		get_security_domain(element1) = get_security_domain(element2)

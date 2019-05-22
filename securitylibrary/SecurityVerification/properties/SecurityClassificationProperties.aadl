@@ -1,22 +1,22 @@
--- Copyright 2018 Carnegie Mellon University. See Notice.txt
+-- Copyright 2019 Carnegie Mellon University. See Notice.txt
 -- Distribution Statement A: Approved for Public Release; Distribution is Unlimited.
+
 property set SecurityClassificationProperties is
-	with EMV2; -- may want to reduce the all to specific component categories
-
-	-- component is trusted
-	Trusted : aadlboolean applies to (all);
-
+	
+---------------------------------------
 -- Security Classifications
 --
+	-- Security Clearances
+	--
 	-- The security clearance properties include a primary 
 	-- security classification (e.g. Top Secret, Secret, Confidential)
 	-- and an optional supplemental security statement. 
-	--	
-	SecurityClearance: inherit aadlstring 
-	applies to (system, device, processor, virtual processor, bus, virtual bus, thread,  subprogram, process, abstract);
 	--
-	SecurityClearanceSupplement: inherit aadlstring
-	applies to (system, device, processor, virtual processor, bus, virtual bus, thread,  subprogram, process, abstract);
+ 	Security_Clearance: inherit enumeration (TopSecret, Secret, Confidential, No_Clearance) 
+	applies to (system, device, processor, virtual processor, thread, thread group, subprogram, subprogram group, process, abstract);
+	--
+	Security_Clearance_Supplement: inherit aadlstring
+	applies to (system, device, processor, virtual processor, thread, thread group, subprogram, subprogram group, process, abstract);
 	--
 	-- The secondary security clearance is provided in the event of multiple clearances 
 	-- (e.g. a clearance from two different agencies.) The secondary clearance also has a 
@@ -25,71 +25,80 @@ property set SecurityClassificationProperties is
 	-- No assumption is made about the relationship between the Security_Clearance property 
 	-- and the Secondary_Security_Clearance property.
 	--
-	SecondarySecurityClearance: inherit aadlstring 
-	applies to (system, device, processor, virtual processor, bus, virtual bus, thread,  subprogram, process, abstract);
+	Secondary_Security_Clearance: inherit  enumeration (TopSecret, Secret, Confidential, No_Clearance) 
+	applies to (system, device, processor, virtual processor, thread, thread group, subprogram, subprogram group, process, abstract);
 	--	
-	SecondarySecurityClearanceSupplement: inherit aadlstring
-	applies to (system, device, processor, virtual processor, bus, virtual bus, thread,  subprogram, process, abstract);
-	--
+	Secondary_Security_Clearance_Supplement: inherit aadlstring
+	applies to (system, device, processor, virtual processor, thread,  thread group, subprogram, subprogram group, process, abstract);
+------------------------------------------
 -- Information Security Levels
 	--
 	-- The information security level properties include a primary 
-	-- security classification (e.g. Top Secret, Secret, Confidential)
-	-- and a caveat (e.g. control markings) statement. 
+	-- data security classification (e.g. Top Secret, Secret, Confidential)
+	-- and a caveat (e.g. control markings) data security statement. 
 	--
-	-- There are no secondary information security levels or caveats.
-	---
- 	InformationSecurityLevel: inherit aadlstring applies to (data, system, process, device, abstract);
+ 	Information_Security_Level: inherit enumeration (TopSecret, Secret, Confidential, Unclassified)  
+ 	applies to (data, port, system, process, device, abstract);
  	--
-    -- Information security caveats are treated as a single string.
+    -- Information security caveats property is a string value.
 	-- For example, a US information caveat value may be "//SI/TK//RELIDO"
 	-- When the  security level and caveat classification are "Top Secret" and "//SI/TK//RELIDO" 
 	-- this specifies the concatenated classification "TOP SECRET//SI/TK//RELIDO"
 	--
-	InformationSecurityCaveats: inherit aadlstring applies to (data, system, process, device, abstract);
+	Information_Security_Caveats: inherit aadlstring 
+	applies to (data, port, system, process, device, abstract);
 
+------------------------------------------
+--  Security Levels
+--
+-- For models which do not need to differentiate between subject security clearances and
+-- information security levels, the SecurityLevel and SecurityLevelCaveats properties can be used.
+-- These are defined with conventional TopSecret, Secret, Confidential, and Unclassified.
+-- However, these can be changed to more generic values (e.g. High, Medium, Low) as desired.
+--
+	Security_Level: inherit enumeration (TopSecret, Secret, Confidential, Unclassified)  
+ 	applies to ( system, processor, virtual processor, thread, thread group, subprogram, subprogram group,  data, port, process, device, abstract);
+-- 	
+ 	Security_Level_Caveats: inherit aadlstring 
+	applies to (system, processor, virtual processor, thread, thread group, subprogram, subprogram group,  data, port, process, device, abstract);
 
--- A security domain is the determining factor in the classification of an enclave of servers/computers. 
--- A network with a different security domain is kept separate from other networks. 
--- Examples: NIPRNet, SIPRNet. JWICS, NSANet are all kept separate.
--- Systems in a domain are tagged with the same SecurityDomain value 
-	SecurityDomain: aadlstring applies to (all);
+------------------------------------------
+	-- Trusted component
+	--
+	-- We use trusted component/system to mean a component/system that is relied upon to a specified extent to 
+	-- enforce a specified security policy and has been verified to some level to warrant that trust.
+	-- For example the trusted components of MILS [Rushby] "trusted components ...
+	--  depend only on very simple environments that can be provided with strong assurance."
+	--
+	-- [Rushby] Rushby, J. Separation and Integration in MILS (The MILS Constitution), 
+	-- Computer Science Laboratory, SRI International, Menlo Park CA 94025 USA. 
+	-- https://pdfs.semanticscholar.org/0398/5ca22524e10f6fab9dd966c61c4ab3de7f74.pdf 
+	--
+	Trusted : aadlboolean applies to (system, process, thread, thread group, subprogram, subprogram group,
+		processor, virtual processor, bus, virtual bus, abstract);
 
+------------------------------------------
+--   Security Domains
+-- 
+-- Security domain: a physical or logical collection of (Subjects and Objects) that adheres to (complies with) a specific security policy(ies).
+-- From [NIST] security domain: A domain within which behaviors, interactions, and outcomes occur and that is defined by a governing security policy. 
+-- Note: A security domain is defined by rules for users, processes, systems, and services that apply to activity within the domain and activity with similar entities in other domains.
 
--- collection of application domains that the recipient is allowed to deal with. 
--- This can be certain types of information, e.g., personnel data, or 
--- certain types of system control, e.g., flight control vs. mission vs. entertainment
-	NeedToKnowDomains: list of aadlstring applies to (all);
+-- For example, a network such as NIPRNet, SIPRNet. JWICS, or NSANet with a different security domain 
+-- is kept separate from other networks. 
+-- Systems in a domain are tagged with the same SecurityDomain value.
 
+	Security_Domain: record (
+		domain_name: aadlstring;
+		description: aadlstring;
+		 )applies to (abstract, system);
 
--- Vulnerabilities
-		--
-		-- There may be multiple vulnerabilities for each element; vulnerability is considered as a condition of the system.
-		--
-		-- This contains elements from the EMV2 hazards property, which may not be needed.
-		--
-	Vulnerabilities: list of record
-  	( 
-   Name : aadlstring;				-- short identification phrase for the vulnerability
-   Description : aadlstring;      	-- description of the vulnerability
-   CrossReference : aadlstring;   	-- cross reference to an external document
-   Phases : list of aadlstring;   	-- operational phases in which the vulnerability may be exploited
-   Environment : aadlstring;      	-- description of operational environment
-   Threat : aadlstring;             -- description of the circumstances under which the vulnerability may be exploited
-   Loss : aadlstring; 			    -- description of the loss that may result from exploitation of the vulnerability
-   Risk : aadlstring;               -- description of risk; where risk is characterized by 
-                                    -- severity, likelihood, and occurrence probability
-   Severity : EMV2::SeverityRange ;             	-- actual risk as severity 
-   Likelihood : EMV2::LikelihoodLabels;         	-- actual risk as likelihood/probability
-   Probability: EMV2::ProbabilityRange;         	-- probability of a exploitation (i.e. realization of loss) 
- -- 
-   AcceptableSeverity : EMV2::SeverityRange;        -- acceptable risk as severity 
-   AcceptableLikelihood : EMV2::LikelihoodLabels;   -- acceptable risk as likelihood/probability
-   DevelopmentAssuranceLevel : EMV2::DALLabels; 	-- level of rigor in development 
-                                         
-   VerificationMethod : aadlstring; 			-- verification method to address the vulnerability or threat
-   SecurityReport : aadlstring;       			-- analysis/assessment of hazard
-   Comment : aadlstring; 
-   )
-     applies to (all);
+-- The Need_To_Know_Domains property is a list of the security domains that a subject is allowed to engage with. 
+-- These domains can be contain specific types of information (e.g., personnel data) or 
+-- certain types of systems (e.g., flight control, mission, entertainment).
+
+	Need_To_Know_Domains: list of aadlstring applies to (all);
+
+--
+     
 end SecurityClassificationProperties;
