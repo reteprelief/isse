@@ -19,9 +19,9 @@ public
 	-- true if element has encryption property and its value is true. Otherwise:
 	-- If the element is a virtual see if all virtual buses it is bound to are encrypted
 	-- false if no layer (set of bound) of virtual buses supports encryption
-	check_encrypted(element : aadl) <=
-	** "Given model element has Encrypted property set to true"	**
-	is_encrypted(element)
+--	check_encrypted(element : aadl) <=
+--	** "Given model element has Encrypted property set to true"	**
+--	is_encrypted(element)
 
 
    -- true if model element has the encryption scheme property set

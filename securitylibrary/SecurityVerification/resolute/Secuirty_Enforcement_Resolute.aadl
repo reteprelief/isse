@@ -4,8 +4,6 @@
 package Secuirty_Enforcement_Resolute
 public
 	
-		with SecurityEnforcementProperties;
-	
 	
 	annex Resolute {**
 		
@@ -68,7 +66,26 @@ public
 	exists(dx: data).contained(dx,cp)  
 	=>
 	(forall( dt: data).contained(dt,cp) => is_encrypted(dt))
+	
+	all_contained_data_have_top_secret_security_level (cp:component) <=
+	** "all data components contained in component " cp " have secret encryption" **
+--	-- the exists claim ensures that there is one data instance in cp; 
+--	-- without this the claim is true if there is no data
+	exists(dx: data).contained(dx,cp)  
+	=>
+	(forall( dt: data).contained(dt,cp) => has_top_secret_security_level(dt))
+	
+	
+		all_contained_data_have_secret_security_level (cp:component) <=
+	** "all data components contained in component " cp " have secret encryption" **
+--	-- the exists claim ensures that there is one data instance in cp; 
+--	-- without this the claim is true if there is no data
+	exists(dx: data).contained(dx,cp)  
+	=>
+	(forall( dt: data).contained(dt,cp) => has_secret_security_level(dt))
 
+	
+	
 	
 	-- connections
 	
@@ -86,8 +103,18 @@ public
 --	-- without this the claim results in an error if there are no buses
 	exists(bx: bus).contained(bx,cp) and 
 	((forall( bt: bus).contained(bt,cp)) and (provides_encryption(bt)))
+----------------------------------------------------------------- 
+-- experimental
 --
+--	exists_subcomponent_with_read_access (cp:component)<=
+--	** "There exist a least one component in " cp " with read access"**
+--	exists(sx:component).contained(sx,cp) 
+--	and
+--	(exists(sb:component).contained(sb,cp) => has_read_access(sb) = true)
 	
+	exists_subcomponent_with_read_access (cp:component)<=
+	** "There exist a least one component in " cp " with read access"**
+	exists(sb: subcomponents(cp)).has_read_access(sb) = true 
 ------------------------------------------------------------------	
 -- example record check for a value - integer 2
 --		check_record() <=
@@ -97,12 +124,12 @@ public
 --property_member (property (c, resoluteps::myrec), "foo") = 2
 
 --	check_double_record() <=
---	** "check double record value"
+--	** "check double record value"**
 --	forall(cp: component).has_property (cp, SecurityEnforecementProperties::Encryption)
 --	and
 --	property_member (property (cp,SecurityEnforecementProperties::encryption ), "encryption")
 --	= property_member (cp,SecurityEnforecementProperties::Encryption)
-		
+--		
 	 -- 
 	 
     system_wide_all_data_is_encrypted () <=
