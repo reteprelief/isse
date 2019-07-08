@@ -1,7 +1,7 @@
 -- Copyright 2019 Carnegie Mellon University. See Notice.txt
 -- Distribution Statement A: Approved for Public Release; Distribution is Unlimited.
 
-package Secuirty_Enforcement_Resolute
+package Security_Enforcement_Resolute
 public
 	
 	
@@ -274,4 +274,4 @@ public
 -- 	
 	**};
 	
-end Secuirty_Enforcement_Resolute;
+end Security_Enforcement_Resolute;
