@@ -110,6 +110,12 @@ recursive_visited_connections(curr: {component}) : {connection} =
 	let ep : {component} = all_reachable_leaf_components(comp);
 	true
 
+
+	record_reachable_components(comp: component)<=
+	** comp " reaches " ep **
+	let ep : {component} = all_reachable_components(comp);
+	true
+
 	record_contained_threads(pr : component) <=
 	** "Threads contained in given component (process) " pr "  are " thrds **
 		let thrds: {component} = contained_threads(pr); true

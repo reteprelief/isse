@@ -49,7 +49,7 @@ public
 			c1: port sense.outp -> control.inp;
 			c2: port control.outp -> actuate.inp;
 annex resolute {**
-	prove (check_mils_policy(this) )
+	prove (record_reachable_components(this.sense)) --check_mils_policy(this) )
 **};
 	end ControlSystem.impl;
 end ApplicationSystems;
