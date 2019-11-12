@@ -84,9 +84,9 @@ is_a_port_connection(c : connection) : bool =
 	let featuredir : string = direction(f);
 	  { c for (c : connections(f)) | 
 	  	-- access right already determines outgoing
-	  	t instanceof access 
+	  	f instanceof access 
 	  	-- "inout" port with an incoming connection and the other end is an "out" is not an outgoing connection
-	  	or (featuredir = "inout" and not(destination(c) = t and direction((feature)source(c)) = "out")  )
+	  	or (featuredir = "inout" and not(destination(c) = f and direction((feature)source(c)) = "out")  )
 	  	-- we have an "out" feature
 	  	or featuredir = "out" 
 	  }
